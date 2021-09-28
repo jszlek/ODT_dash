@@ -1,0 +1,1 @@
+conda install -c conda-forge h2o=3.32.1.6 dash dash-html-compontents dash-core-compontents dash-table plotly pandas psutil
