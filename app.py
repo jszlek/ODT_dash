@@ -66,6 +66,7 @@ h2o.init(nthreads=my_threads,
          min_mem_size=memfree_g,
          max_mem_size=memfree_g,
          port=57750,
+         ip='127.0.0.1',
          #         ice_root=str(my_export_dir),
          name=str(cluster_name),
          start_h2o=True)
@@ -185,7 +186,13 @@ app.layout = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-fami
                           dcc.Graph(figure=fig_features_importance),
 
                           # We display the most important feature's name
-                          html.H4(children=slider_1_label),
+                          html.H6(
+                                  children=[
+                                      slider_1_label,
+                                      html.Span(children=' ', id='updatemode-output-container1')
+                                            ]
+                          ),
+                          html.Div(),
 
                           # The Dash Slider is built according to Feature #1 ranges
                           dcc.Slider(
@@ -194,7 +201,7 @@ app.layout = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-fami
                               max=slider_1_max,
                               step=5,
                               value=slider_1_mean,
-                              marks={i: '{} %'.format(i) for i in
+                              marks={i: '{} perc'.format(i) for i in
                                      np.linspace(slider_1_min, slider_1_max, 1 + (slider_1_max - slider_1_min)*1)}
                           ),
 
@@ -207,7 +214,7 @@ app.layout = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-fami
                               max=slider_2_max,
                               step=5,
                               value=slider_2_mean,
-                              marks={i: '{} %'.format(i) for i in
+                              marks={i: '{} perc'.format(i) for i in
                                      np.linspace(slider_3_min, slider_2_max, 1 + (slider_2_max - slider_2_min)*1)}
                           ),
 
@@ -219,20 +226,27 @@ app.layout = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-fami
                               max=slider_3_max,
                               step=1,
                               value=slider_3_mean,
-                              marks={i: '{} %'.format(i) for i in
+                              marks={i: '{} perc'.format(i) for i in
                                      np.linspace(slider_3_min, slider_3_max, 1 + (slider_3_max - slider_3_min)*1)},
                           ),
 
-                          # The predictin result will be displayed and updated here
+                          # The prediction result will be displayed and updated here
                           html.H2(id="prediction_result"),
 
                       ])
 
 
-# The callback function will provide one "Ouput" in the form of a string (=children)
-@app.callback(Output(component_id="prediction_result", component_property="children"),
+# The callback function will provide one "Output" in the form of a string (=children)
+@app.callback(  [
+                    Output(component_id="prediction_result", component_property="children"),
+                    Output(component_id="updatemode-output-container1", component_property="children")
+                ],
               # The values correspnding to the three sliders are obtained by calling their id and value property
-              [Input("X1_slider", "value"), Input("X2_slider", "value"), Input("X3_slider", "value")])
+                [
+                    Input("X1_slider", "value"),
+                    Input("X2_slider", "value"),
+                    Input("X3_slider", "value")
+                ])
 # The input variable are set in the same order as the callback Inputs
 def update_prediction(X1, X2, X3):
     # We create a NumPy array in the form of the original features
@@ -263,7 +277,7 @@ def update_prediction(X1, X2, X3):
     prediction = float(prediction.iloc[0])
 
     # And retuned to the Output of the callback function
-    return "Prediction: {}".format(round(prediction, 1))
+    return "Prediction: {}".format(round(prediction, 1)), " {}".format(X1)
 
 
 if __name__ == "__main__":
