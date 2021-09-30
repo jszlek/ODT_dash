@@ -2,6 +2,7 @@
 import dash
 from dash import dcc
 from dash import html
+import dash_bootstrap_components as dbc
 import string
 import statistics
 import pandas as pd
@@ -15,7 +16,7 @@ import sys
 from h2o.automl import H2OAutoML
 import h2o
 from pathlib import Path
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from configparser import ConfigParser
 
 # Load config.ini file
@@ -24,9 +25,6 @@ config.read('config.ini')
 
 my_threads = int(config['DEFAULT']['my_threads'])
 my_max_ram_allowed = int(config['DEFAULT']['my_max_ram_allowed'])
-
-# create app containter
-# app = dash.Dash()
 
 
 # -------------------------------
@@ -96,52 +94,16 @@ my_data = my_data[extracted_column_names]
 
 # Get the features' importance and their corresponding label
 extraced_varimp = my_model.varimp(use_pandas=True)
-df_feature_importances = pd.DataFrame(extraced_varimp, columns=["scaled_imporatance"], index=["variable"])
+df_feature_importances = pd.DataFrame(extraced_varimp[["scaled_importance", "variable"]])
 
 
 # We create a Features Importance Bar Chart
 fig_features_importance = go.Figure()
-fig_features_importance.add_trace(go.Bar(x=df_feature_importances.index,
-                                         y=df_feature_importances["scaled_imporatance"],
-                                         marker_color='rgb(171, 226, 251)')
+fig_features_importance.add_trace(go.Bar(x=df_feature_importances["variable"],
+                                         y=df_feature_importances["scaled_importance"],
+                                         marker_color='rgb(171,226,251)')
                                   )
 fig_features_importance.update_layout(title_text='<b>Features Importance of the model<b>', title_x=0.5)
-
-
-
-# -*- coding: utf-8 -*-
-
-# We add all Plotly and Dash necessary librairies
-
-
-#import dash
-#import dash_core_components as dcc
-#import dash_html_components as html
-#import dash_daq as daq
-
-
-# We start by creating a virtual regression use-case
-#X, y = make_regression(n_samples=1000, n_features=8, n_informative=5, random_state=22)
-
-# We rename columns as industrial parameters
-#col_names = ["Temperature", "Viscosity", "Pressure", "pH", "Inlet_flow", "Rotating_Speed", "Particles_size",
-#             "Color_density"]
-
-#df = pd.DataFrame(X, columns=col_names)
-
-# We change the most important features ranges to make them look like actual figures
-#df["pH"] = 6.5 + df["pH"] / 4
-#df["Pressure"] = 10 + df["Pressure"]
-#df["Temperature"] = 20 + df["Temperature"]
-#df["Y"] = 90 + y / 20
-
-# We train a simple RF model
-#model = RandomForestRegressor()
-#model.fit(df.drop("Y", axis=1), df["Y"])
-
-
-# The command below can be activated in a standard notebook to display the chart
-# fig_features_importance.show()
 
 # We record the name, min, mean and max of the three most important features
 slider_1_label = my_data.columns[0]
@@ -161,24 +123,54 @@ slider_3_max = round(my_data[slider_3_label].max())
 
 ###############################################################################
 
-app = dash.Dash()
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-# The page structure will be:
-#    Features Importance Chart
-#    <H4> Feature #1 name
-#    Slider to update Feature #1 value
-#    <H4> Feature #2 name
-#    Slider to update Feature #2 value
-#    <H4> Feature #3 name
-#    Slider to update Feature #3 value
-#    <H2> Updated Prediction
-#    Callback fuction with Sliders values as inputs and Prediction as Output
+sidebar = html.Div(
+    style={'color': "#004f9c"},
+    children=[
+        html.Div(
+            [
+                # width: 3rem ensures the logo is the exact width of the
+                # collapsed sidebar (accounting for padding)
+                html.Img(src='assets/UJCM_logo.svg', style={"width": "3rem"}),
+                html.H2("ODT calculator"),
+            ],
+            className="sidebar-header",
+        ),
+        html.Hr(),
+        dbc.Nav(
+            [
+                dbc.NavLink(
+                    [html.I(className="fas fa-home me-2"), html.Span("Home")],
+                    href="/",
+                    active="exact",
+                ),
+                dbc.NavLink(
+                    [
+                        html.I(className="fas fa-calendar-alt me-2"),
+                        html.Span("Calendar"),
+                    ],
+                    href="/calendar",
+                    active="exact",
+                ),
+                dbc.NavLink(
+                    [
+                        html.I(className="fas fa-envelope-open-text me-2"),
+                        html.Span("Messages"),
+                    ],
+                    href="/messages",
+                    active="exact",
+                ),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+    ],
+    className="sidebar",
+)
 
-# We apply basic HTML formatting to the layout
-app.layout = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-family': 'Verdana'},
-
-                      children=[
-
+content = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-family': 'Verdana'},
+                   children=[
                           # Title display
                           html.H1(children="ODT Simulation Tool"),
 
@@ -235,6 +227,27 @@ app.layout = html.Div(style={'textAlign': 'center', 'width': '800px', 'font-fami
 
                       ])
 
+app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
+
+
+# set the content according to the current pathname
+@app.callback(Output("content", "children"), Input("url", "pathname"))
+def render_page_content(pathname):
+    if pathname == "/":
+        return html.P("This is the home page!")
+    elif pathname == "/calendar":
+        return html.P("This is your calendar... not much in the diary...")
+    elif pathname == "/messages":
+        return html.P("Here are all your messages")
+    # If the user tries to reach a different page, return a 404 message
+    return dbc.Jumbotron(
+        [
+            html.H1("404: Not found", className="text-danger"),
+            html.Hr(),
+            html.P(f"The pathname {pathname} was not recognised..."),
+        ]
+    )
+
 
 # The callback function will provide one "Output" in the form of a string (=children)
 @app.callback(  [
@@ -260,14 +273,6 @@ def update_prediction(X1, X2, X3):
 
     input_X = pd.DataFrame(input_X)
 
-    # input_X = np.array([X1,
-    #                     df["Viscosity"].mean(),
-    #                     df["Particles_size"].mean(),
-    #                     X2,
-    #                     df["Inlet_flow"].mean(),
-    #                     df["Rotating_Speed"].mean(),
-    #                     X3,
-    #                     df["Color_density"].mean()]).reshape(1, -1)
 
     my_data_h2o = h2o.H2OFrame(input_X)
 
@@ -282,64 +287,3 @@ def update_prediction(X1, X2, X3):
 
 if __name__ == "__main__":
     app.run_server(host='0.0.0.0', port=8050, debug=True)
-
-
-
-
-# # create app layout
-# app.layout = html.Div([
-#     html.Label('Dropdown'),
-#     dcc.Dropdown(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value='MTL'
-#     ),
-#
-#     html.Label('Multi-Select Dropdown'),
-#     dcc.Dropdown(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value=['MTL', 'SF'],
-#         multi=True
-#     ),
-#
-#     html.Label('Radio Items'),
-#     dcc.RadioItems(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value='MTL'
-#     ),
-#
-#     html.Label('Checkboxes'),
-#     dcc.Checklist(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value=['MTL', 'SF']
-#     ),
-#
-#     html.Label('Text Input'),
-#     dcc.Input(value='MTL', type='text'),
-#
-#     html.Label('Slider'),
-#     dcc.Slider(
-#         min=0,
-#         max=9,
-#         marks={i: 'Label {}'.format(i) if i == 1 else str(i) for i in range(1, 6)},
-#         value=5,
-#     ),
-# ], style={'columnCount': 2})
-#
-# if __name__ == '__main__':
-#     app.run_server(host='0.0.0.0', port=8050, debug=True)
