@@ -1,73 +1,38 @@
-/* This creates a skinny side bar fixed to the left of the page */
+/* Style the sidebar - fixed full height */
 .sidebar {
+  height: 100%;
+  width: 160px;
   position: fixed;
+  z-index: 1;
   top: 0;
   left: 0;
-  bottom: 0;
-  width: 5rem;
-  padding: 2rem 1rem;
-  background-color: #004f9c;
-  z-index: 1050;
-  transition: width 0.1s ease-in-out;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 16px;
 }
 
-/* when the user hovers on the sidebar, expand it */
-.sidebar:hover {
-  width: 16rem;
+/* Style sidebar links */
+.sidebar a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
 }
 
-/* make sure the contents of the navlink don't wrap when navbar collapses */
-.sidebar .nav-link {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
+/* Style links on mouse-over */
+.sidebar a:hover {
+  color: #f1f1f1;
 }
 
-/* fix the width of the icons */
-.sidebar .nav-link i {
-  width: 1rem;
-}
-
-/* hide the navlink labels by default */
-.sidebar .nav-link span {
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.1s ease-in-out;
-}
-
-/* when the sidebar is hovered, reveal the labels */
-.sidebar:hover .nav-link span {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* container for the sidebar header. make sure the contents don't wrap when
- * the sidebar is collapsed.
- */
-.sidebar-header {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-/* position the header relative to the logo and hide by default */
-.sidebar-header h2 {
-  opacity: 0;
-  margin-left: 1rem;
-  margin-bottom: 0;
-  transition: opacity 0.1s ease-in-out;
-}
-
-/* reveal the header when the sidebar is toggled */
-.sidebar:hover .sidebar-header h2 {
-  opacity: 1;
-}
-
-/* position the content relative to the collapsed sidebar */
+/* Style the main content */
 .content {
-  margin-left: 7rem;
-  margin-right: 2rem;
-  padding: 2rem 1rem;
+  margin-left: 160px; /* Same as the width of the sidenav */
+  padding: 0px 10px;
+}
+
+/* Add media queries for small screens (when the height of the screen is less than 450px, add a smaller padding and font-size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
 }
