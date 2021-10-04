@@ -19,6 +19,7 @@ from pathlib import Path
 from dash.dependencies import Input, Output, State
 from configparser import ConfigParser
 
+
 # Load config.ini file
 config = ConfigParser(allow_no_value=True)
 config.read('config.ini')
@@ -111,7 +112,7 @@ search_bar = dbc.Row(
     [
         dbc.Col(dbc.Input(type="search", placeholder="Search", id="search_bar")),
         dbc.Col(
-            dbc.Button("Search", color="primary", className="ml-2", id="search_bar_button"),
+            dbc.Button("Search", color="light", className="ml-2", id="search_bar_button"),
             width="auto",
         ),
     ],
@@ -139,8 +140,7 @@ navbar = dbc.Navbar(
         dbc.NavbarToggler(id="navbar-toggler"),
         dbc.Collapse(search_bar, id="navbar-collapse", navbar=True),
     ],
-    color="dark",
-    dark=True,
+    color='primary',
     sticky="top",
     style={'width': 'calc(100% - 12rem)', 'float': 'right', 'height': '4.5rem'}
 )
@@ -168,12 +168,12 @@ links = {
 
 sidebar = html.Div(
     [
-        html.H6("Menu", className="display-6"),
+        html.H6("Menu", className="display-4"),
         html.Hr(),
         dbc.Nav(
             [dbc.NavLink(x, href=links[x][0], id=links[x][1]) for x in links.keys()],
             vertical=True,
-            pills=True,
+            pills=True
         ),
     ],
     style=SIDEBAR_STYLE,
@@ -236,56 +236,67 @@ single_page = dcc.Loading(
                            # We display the most important feature's name
                            dcc.Graph(figure=fig_features_importance),
 
+                           dbc.Col(width='30%', children=
+                               [
+                                   html.P(
+                                           slider_1_label
+                                   ),
+                                   # html.Div(),
 
-                           html.H6(
-                               children=[
-                                   slider_1_label,
-                                   html.Span(children=' ', id='updatemode-output-container1')
-                               ]
-                           ),
-                           # html.Div(),
+                                   # The Dash Slider is built according to Feature #1 ranges
+                                   dcc.Slider(
+                                       id='X1_slider',
+                                       min=slider_1_min,
+                                       max=slider_1_max,
+                                       step=5,
+                                       value=slider_1_mean
+                                   ),
 
-                           # The Dash Slider is built according to Feature #1 ranges
-                           dcc.Slider(
-                               id='X1_slider',
-                               min=slider_1_min,
-                               max=slider_1_max,
-                               step=5,
-                               value=slider_1_mean,
-                               marks={i: '{} perc'.format(i) for i in
-                                      np.linspace(slider_1_min, slider_1_max, 1 + (slider_1_max - slider_1_min) * 1)}
-                           ),
+                                   dcc.Input(
+                                       id='X1_slider_value',
+                                       type='number',
+                                       min=slider_1_min,
+                                       max=slider_1_max,
+                                       value=slider_1_mean)
+                               ],
+                            ),
 
                            # The same logic is applied to the following names / sliders
-                           html.H6(children=[
+                           html.P(
                                slider_2_label,
-                               html.Span(children=' ', id='updatemode-output-container2')
-                           ]),
+                           ),
 
                            dcc.Slider(
                                id='X2_slider',
                                min=slider_2_min,
                                max=slider_2_max,
                                step=5,
-                               value=slider_2_mean,
-                               marks={i: '{} perc'.format(i) for i in
-                                      np.linspace(slider_3_min, slider_2_max, 1 + (slider_2_max - slider_2_min) * 1)}
+                               value=slider_2_mean
                            ),
+                           dcc.Input(
+                               id='X2_slider_value',
+                               type='number',
+                               min=slider_2_min,
+                               max=slider_2_max,
+                               value=slider_2_mean),
 
-                           html.H6(children=[
+                           html.P(
                                slider_3_label,
-                               html.Span(children=' ', id='updatemode-output-container3')
-                           ]),
+                           ),
 
                            dcc.Slider(
                                id='X3_slider',
                                min=slider_3_min,
                                max=slider_3_max,
                                step=1,
-                               value=slider_3_mean,
-                               marks={i: '{} perc'.format(i) for i in
-                                      np.linspace(slider_3_min, slider_3_max, 1 + (slider_3_max - slider_3_min) * 1)},
+                               value=slider_3_mean
                            ),
+                           dcc.Input(
+                               id='X3_slider_value',
+                               type='number',
+                               min=slider_3_min,
+                               max=slider_3_max,
+                               value=slider_3_mean),
 
                            # The prediction result will be displayed and updated here
                            html.H3(id="prediction_result")
@@ -294,7 +305,7 @@ single_page = dcc.Loading(
                    )
 
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN])
 app.config.suppress_callback_exceptions = True
 app.layout = html.Div([
                         dcc.Location(id="url", refresh=False),
@@ -341,18 +352,59 @@ def render_page_content(pathname):
 # The callback function will provide one "Output" in the form of a string (=children)
 @app.callback([
     Output(component_id="prediction_result", component_property="children"),
-    Output(component_id="updatemode-output-container1", component_property="children"),
-    Output(component_id="updatemode-output-container2", component_property="children"),
-    Output(component_id="updatemode-output-container3", component_property="children")
+    Output(component_id="X1_slider", component_property="value"),
+    Output(component_id="X2_slider", component_property="value"),
+    Output(component_id="X3_slider", component_property="value"),
+    Output(component_id='X1_slider_value', component_property='value'),
+    Output(component_id='X2_slider_value', component_property='value'),
+    Output(component_id='X3_slider_value', component_property='value')
 ],
     # The values corresponding to the three sliders are obtained by calling their id and value property
     [
         Input("X1_slider", "value"),
         Input("X2_slider", "value"),
-        Input("X3_slider", "value")
+        Input("X3_slider", "value"),
+        Input('X1_slider_value', 'value'),
+        Input('X2_slider_value', 'value'),
+        Input('X3_slider_value', 'value')
     ])
 # The input variable are set in the same order as the callback Inputs
-def update_prediction(X1, X2, X3):
+def update_prediction(X1, X2, X3, X1_value, X2_value, X3_value):
+
+    ctx = dash.callback_context
+    trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    if trigger_id == "X1_slider_value":
+        X1 = X1_value
+    else:
+        X1
+
+    if trigger_id == "X1_slider":
+        X1_value = X1
+    else:
+        X1_value
+
+    if trigger_id == "X2_slider_value":
+        X2 = X2_value
+    else:
+        X2
+
+    if trigger_id == "X2_slider":
+        X2_value = X2
+    else:
+        X2_value
+
+    if trigger_id == "X3_slider_value":
+        X3 = X3_value
+    else:
+        X3
+
+    if trigger_id == "X3_slider":
+        X3_value = X3
+    else:
+        X3_value
+
+
     # We create a NumPy array in the form of the original features
     # ["Pressure","Viscosity","Particles_size", "Temperature","Inlet_flow", "Rotating_Speed","pH","Color_density"]
     # Except for the X1, X2 and X3, all other non-influencing parameters are set to their mean
@@ -371,12 +423,17 @@ def update_prediction(X1, X2, X3):
     prediction = prediction.as_data_frame()
     prediction = float(prediction.iloc[0])
 
+
+
     # And retuned to the Output of the callback function
     return [
             "Prediction: {}".format(round(prediction, 1)),
-            " {}".format(X1),
-            " {}".format(X2),
-            " {}".format(X3)
+            X1,
+            X2,
+            X3,
+            X1_value,
+            X2_value,
+            X3_value,
            ]
 
 
