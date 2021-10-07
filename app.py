@@ -207,21 +207,10 @@ fig_features_importance.add_trace(go.Bar(x=df_feature_importances["variable"],
 fig_features_importance.update_layout(title_text='<b>Features Importance of the model<b>', title_x=0.5)
 
 # We record the name, min, mean and max of the three most important features
-slider_1_label = my_data.columns[0]
-slider_1_min = math.floor(my_data[slider_1_label].min())
-slider_1_mean = round(my_data[slider_1_label].mean())
-slider_1_max = round(my_data[slider_1_label].max())
-
-slider_2_label = my_data.columns[1]
-slider_2_min = math.floor(my_data[slider_2_label].min())
-slider_2_mean = round(my_data[slider_2_label].mean())
-slider_2_max = round(my_data[slider_2_label].max())
-
-slider_3_label = my_data.columns[2]
-slider_3_min = math.floor(my_data[slider_3_label].min())
-slider_3_mean = round(my_data[slider_3_label].mean())
-slider_3_max = round(my_data[slider_3_label].max())
-
+sliders_label = my_data.columns
+sliders_min = np.floor(my_data.min())
+sliders_mean = np.floor(my_data.mean())
+sliders_max = np.floor(my_data.max())
 
 
 # Layout for user info page
@@ -230,76 +219,309 @@ single_page = dcc.Loading(
                    children=html.Div([
                            # Title display
                            dbc.Row([dbc.Col(html.Div(html.H2(children="ODT Simulation Tool")))],
-                                   style={"height": "200px", "width": "100%", "margin-left": "auto", "margin-right": "auto", "margin-bottom": "10px", "margin-top": "10px"}),
+                                   style={"height": "40px", "width": "100%", "margin-left": "auto", "margin-right": "auto", "margin-bottom": "5px", "margin-top": "5px"}),
 
                            # Dash Graph Component calls the fig_features_importance parameters
                            # We display the most important feature's name
                            dcc.Graph(figure=fig_features_importance),
 
-                           dbc.Col(width='30%', children=
-                               [
-                                   html.P(
-                                           slider_1_label
-                                   ),
-                                   # html.Div(),
+                           html.Hr(style={'size': '100%', 'color': 'grey'}),
+                           html.Div(
+                            [
 
-                                   # The Dash Slider is built according to Feature #1 ranges
-                                   dcc.Slider(
-                                       id='X1_slider',
-                                       min=slider_1_min,
-                                       max=slider_1_max,
-                                       step=5,
-                                       value=slider_1_mean
-                                   ),
+                               dbc.Row(                                         # First row
+                                            [
+                                                dbc.Col(html.Div([
+                                                    html.P(
+                                                        sliders_label[0],
+                                                        style={'width': '100%', 'align': 'left'}
+                                                    ),
+                                                    dbc.Row(
+                                                        [
+                                                            # The Dash Slider is built according to Feature #1 ranges
+                                                            html.Div(
+                                                                [
+                                                                    dcc.Slider(id='X1_slider', min=sliders_min[0],
+                                                                               max=sliders_max[0], step=0.1,
+                                                                               value=sliders_mean[0],
+                                                                               )
+                                                                ],
+                                                                style={'width': '70%', 'justify-content': 'left',
+                                                                       'align-items': 'left'}
+                                                            ),
 
-                                   dcc.Input(
-                                       id='X1_slider_value',
-                                       type='number',
-                                       min=slider_1_min,
-                                       max=slider_1_max,
-                                       value=slider_1_mean)
+                                                            dcc.Input(
+                                                                id='X1_slider_value',
+                                                                type='number',
+                                                                min=sliders_min[0],
+                                                                max=sliders_max[0],
+                                                                value=sliders_mean[0],
+                                                                style={'width': '20%', 'align': 'right'}
+                                                            ),
+                                                        ],
+                                                    ),
+                                                    html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                                    ]),
+                                                    width={"size": 4, "order": 1},
+                                                ),
+                                                dbc.Col(
+                                                    html.Div("The second of three columns"),
+                                                    width={"size": 4, "order": 2},
+                                                ),
+                                                dbc.Col(
+                                                    html.Div("The third of three columns"),
+                                                    width={"size": 4, "order": 3},
+                                                ),
+                                            ]
+                                        ),
+                               dbc.Row(                                         # Second row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                         # Third row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                         # Fourth row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                         # Fifth row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                          # Sixth row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                            # Seventh row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                             # Eighth row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                             # Ninth row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+
+                               dbc.Row(                                             # Tenth row
+                                    [
+                                        dbc.Col(
+                                            html.Div("The first of three columns"),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The second of three columns"),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div("The third of three columns"),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
+                            ]),
+
+                           html.Div([
+                               dbc.Row([
+
+
+                                       html.P(
+                                           sliders_label[1],
+                                           style={'width': '100%', 'align': 'left'}
+                                        ),
+
+                                       html.Div([
+                                           dbc.Col(
+                                            [
+                                                # The Dash Slider is built according to Feature #2 ranges
+                                                html.Div(
+                                                    [
+                                                        dcc.Slider(id='X2_slider', min=sliders_min[1],
+                                                                   max=sliders_max[1], step=0.1,
+                                                                   value=sliders_mean[1],
+                                                                   )
+                                                    ],
+                                                    style={'width': '80%', 'justify-content': 'center', 'align-items': 'center'}
+                                                ),
+
+                                                dcc.Input(
+                                                    id='X2_slider_value',
+                                                    type='number',
+                                                    min=sliders_min[1],
+                                                    max=sliders_max[1],
+                                                    value=sliders_mean[1],
+                                                    style={'width': '20%', 'align': 'right'}
+                                                ),
+
+                                            ]
+                                           )
+                                       ]),
+
+                                       html.Hr(style={'size': '15%', 'color' : 'grey'}),
+
+                                       html.P(
+                                               sliders_label[2],
+                                               style={'width': '100%', 'align': 'left'}
+                                           ),
+                                       html.Div([
+                                           dbc.Col(
+                                               [
+                                                   # The Dash Slider is built according to Feature #3 ranges
+                                                   html.Div(
+                                                       [
+                                                           dcc.Slider(id='X3_slider', min=sliders_min[2],
+                                                                      max=sliders_max[2], step=0.1,
+                                                                      value=sliders_mean[2],
+                                                                      )
+                                                       ],
+                                                       style={'width': '80%', 'justify-content': 'center',
+                                                              'align-items': 'center'}
+                                                   ),
+
+                                                   dcc.Input(
+                                                       id='X3_slider_value',
+                                                       type='number',
+                                                       min=sliders_min[2],
+                                                       max=sliders_max[2],
+                                                       value=sliders_mean[2],
+                                                       style={'width': '20%', 'align': 'right'}
+                                                   ),
+
+                                               ], width={"size": 4, "order": 3},
+                                           )
+                                       ]),
+
+                                       html.Hr(style={'size': '15%', 'color': 'grey'}),
+
+                                       ],
+                                    style={'width': '33%', 'display': 'inline-block', 'align': 'left'},
+                                       ),
+                               dbc.Row([
+                                   dbc.Col([html.Div(html.P('my next col'))])
+
                                ],
-                            ),
+                                   style={'width': '33%', 'display': 'inline-block', 'margin': 'center'},
+                               )
+                               ]),
+                           html.Div([
 
-                           # The same logic is applied to the following names / sliders
-                           html.P(
-                               slider_2_label,
+                           ],
+                            style={'width': '33%', 'display': 'inline-block', 'margin': 'center'},
                            ),
-
-                           dcc.Slider(
-                               id='X2_slider',
-                               min=slider_2_min,
-                               max=slider_2_max,
-                               step=5,
-                               value=slider_2_mean
-                           ),
-                           dcc.Input(
-                               id='X2_slider_value',
-                               type='number',
-                               min=slider_2_min,
-                               max=slider_2_max,
-                               value=slider_2_mean),
-
-                           html.P(
-                               slider_3_label,
-                           ),
-
-                           dcc.Slider(
-                               id='X3_slider',
-                               min=slider_3_min,
-                               max=slider_3_max,
-                               step=1,
-                               value=slider_3_mean
-                           ),
-                           dcc.Input(
-                               id='X3_slider_value',
-                               type='number',
-                               min=slider_3_min,
-                               max=slider_3_max,
-                               value=slider_3_mean),
-
                            # The prediction result will be displayed and updated here
-                           html.H3(id="prediction_result")
+                           html.Div([
+                                html.P(),
+                                html.H3(id="prediction_result")
+                           ],
+                               style={'width': '100%', 'display': 'inline-block'},
+                           ),
 
                             ], className='prediction_result'),
                    )
