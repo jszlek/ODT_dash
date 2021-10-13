@@ -361,3 +361,44 @@ single_page = dcc.Loading(
 
                             ], className='prediction_result'),
                    )
+
+batch_page = dcc.Loading(
+
+    html.Div([
+        html.Hr(),
+        html.A('Batch mode, please provide comma separated file with header',
+               style={
+                   'width': '100%',
+                   'height': '90px',
+                   'lineHeight': '90px',
+                   'textAlign': 'center',
+               },
+               ),
+        html.Hr(),
+        dcc.Upload(
+            id='upload-data',
+            children=html.Div([
+                'Drag and Drop or ',
+                html.A('Select Files'),
+                html.Hr(),
+            ]),
+            style={
+                'width': '100%',
+                'height': '60px',
+                'lineHeight': '60px',
+                'borderWidth': '1px',
+                'borderStyle': 'dashed',
+                'borderRadius': '5px',
+                'textAlign': 'center',
+                'margin': '10px'
+            },
+            # Allow multiple files to be uploaded
+            multiple=True
+        ),
+        html.Br(),
+        html.P(),
+        html.P(),
+        html.P(),
+        html.Div(id='output-data-upload'),
+    ])
+)

@@ -3,15 +3,16 @@ import dash
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
+# import dash_table
 import string
 import statistics
 import pandas as pd
 import numpy as np
-#import plotly.graph_objects as go
+# import plotly.graph_objects as go
 import run_h2o_server
 from run_h2o_server import my_model
 import h2o
-from layouts import single_page
+from layouts import single_page, batch_page
 
 import psutil
 import random
@@ -22,7 +23,9 @@ from h2o.automl import H2OAutoML
 
 from dash.dependencies import Input, Output, State
 
-
+import base64
+import datetime
+import io
 
 # --------------------------------------
 # Load test data
@@ -265,7 +268,71 @@ def update_prediction(X1, X2, X3, X1_value, X2_value, X3_value):
            ]
 
 
+def parse_contents(contents, filename, date):
+    content_type, content_string = contents.split(',')
 
+    decoded = base64.b64decode(content_string)
+    try:
+        if 'csv' in filename:
+            # Assume that the user uploaded a CSV file
+            df = pd.read_csv(
+                io.StringIO(decoded.decode('utf-8')))
+        elif 'xls' in filename:
+            # Assume that the user uploaded an excel file
+            df = pd.read_excel(io.BytesIO(decoded))
+    except Exception as e:
+        print(e)
+        return html.Div([
+            'There was an error processing this file.'
+        ])
+
+    try:
+        if df is not None:
+            # make predictions
+            h2o_df = h2o.H2OFrame(df)
+            predicted_values = my_model.predict(h2o_df)
+            predicted_values = predicted_values.as_data_frame()
+            df['predicted'] = predicted_values
+
+    except Exception as e:
+        print(e)
+        return html.Div([
+            'There was an error during predicting'
+        ])
+
+    return html.Div([
+        html.H5(filename),
+        html.H6(datetime.datetime.fromtimestamp(date)),
+
+
+
+        dbc.Table.from_dataframe(df, striped=True, bordered=True, hover=True),
+#            (
+#            data=predicted_table.to_dict('records'),
+#            columns=[{'name': i, 'id': i} for i in predicted_table.columns]
+#        ),
+
+        html.Hr(),  # horizontal line
+
+        # For debugging, display the raw contents provided by the web browser
+        html.Div('Raw Content'),
+        html.Pre(contents[0:200] + '...', style={
+            'whiteSpace': 'pre-wrap',
+            'wordBreak': 'break-all'
+        })
+    ])
+
+
+@app.callback(Output('output-data-upload', 'children'),
+              Input('upload-data', 'contents'),
+              State('upload-data', 'filename'),
+              State('upload-data', 'last_modified'))
+def update_output(list_of_contents, list_of_names, list_of_dates):
+    if list_of_contents is not None:
+        children = [
+            parse_contents(c, n, d) for c, n, d in
+            zip(list_of_contents, list_of_names, list_of_dates)]
+        return children
 
 if __name__ == "__main__":
     app.run_server(host='0.0.0.0', port=8050, debug=True)
