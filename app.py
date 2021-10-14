@@ -3,14 +3,13 @@ import dash
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
-# import dash_table
 import string
 import statistics
 import pandas as pd
 import numpy as np
 # import plotly.graph_objects as go
 import run_h2o_server
-from run_h2o_server import my_model
+from run_h2o_server import my_model, open_browser
 import h2o
 from layouts import single_page, batch_page
 
@@ -19,6 +18,7 @@ import random
 import math
 import csv
 import sys
+import time
 from h2o.automl import H2OAutoML
 
 from dash.dependencies import Input, Output, State
@@ -144,6 +144,7 @@ app.layout = html.Div([
                         navbar,
                         html.Div(id='page-content', style=CONTENT_STYLE)
 ])
+
 
 # ------------------------------------- #
 # ------------- CALLBACKS ------------- #
@@ -333,6 +334,11 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
             parse_contents(c, n, d) for c, n, d in
             zip(list_of_contents, list_of_names, list_of_dates)]
         return children
+
+
+# open browser
+open_browser()
+
 
 if __name__ == "__main__":
     app.run_server(host='0.0.0.0', port=8050, debug=True)

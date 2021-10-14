@@ -3,6 +3,7 @@ import h2o
 import random
 import string
 import psutil
+import webbrowser
 from pathlib import Path
 
 # Load config.ini file
@@ -23,6 +24,10 @@ suppress_callback_exceptions = True
 # -------------------------------
 def random_key_generator(size=6, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+
+def open_browser(port=8050):
+    webbrowser.open_new(f"http://localhost:{port}")
 
 
 # get current directory (PosixPath)
@@ -51,7 +56,8 @@ cluster_name = 'A' + random_key_generator(15)  # for h2o cluster name
 # -------------------------------------
 # run h2o server
 # -------------------------------------
-h2o.init(nthreads=my_threads,
+h2o.init(
+         nthreads=my_threads,
          min_mem_size=memfree_g,
          max_mem_size=memfree_g,
          port=57750,
