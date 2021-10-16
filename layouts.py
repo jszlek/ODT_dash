@@ -78,22 +78,24 @@ single_page = dcc.Loading(
                                                             html.Div(
                                                                 [
                                                                     dcc.Slider(id='X1_slider', min=sliders_min[0],
-                                                                               max=sliders_max[0], step=0.1,
+                                                                               max=sliders_max[0], step=1,
                                                                                value=sliders_mean[0],
                                                                                )
                                                                 ],
-                                                                style={'width': '70%', 'justify-content': 'left',
+                                                                style={'width': '60%', 'justify-content': 'left',
                                                                        'align-items': 'left'}
                                                             ),
 
-                                                            dcc.Input(
+                                                            dcc.Dropdown(
                                                                 id='X1_slider_value',
-                                                                type='number',
-                                                                min=sliders_min[0],
-                                                                max=sliders_max[0],
-                                                                value=sliders_mean[0],
-                                                                style={'width': '20%', 'align': 'right'}
-                                                            ),
+                                                                options=[
+                                                                    {'label': ' K ', 'value': 0},
+                                                                    {'label': ' M ', 'value': 1}
+                                                                ],
+                                                                value=1,
+                                                                style={'width': '30%', 'align': 'right'},
+                                                                searchable=False
+                                                                ),
                                                         ],
                                                     ),
                                                     html.Hr(style={'size': '33%', 'color': 'grey'}),
