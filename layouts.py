@@ -62,14 +62,6 @@ single_page = dcc.Loading(
                            dcc.Graph(figure=fig_features_importance),
 
                            html.Hr(style={'size': '100%', 'color': 'grey'}),
-                           # The prediction result will be displayed and updated here
-                           html.Div([
-                               html.P(),
-                               html.H3(id="prediction_result")
-                           ],
-                               style={'width': '100%', 'display': 'inline-block'},
-                           ),
-
                            html.Div(
                             [
 
@@ -86,25 +78,22 @@ single_page = dcc.Loading(
                                                             html.Div(
                                                                 [
                                                                     dcc.Slider(id='X1_slider', min=sliders_min[0],
-                                                                               max=sliders_max[0], step=1,
+                                                                               max=sliders_max[0], step=0.1,
                                                                                value=sliders_mean[0],
                                                                                )
                                                                 ],
-                                                                style={'width': '60%', 'justify-content': 'left',
+                                                                style={'width': '70%', 'justify-content': 'left',
                                                                        'align-items': 'left'}
                                                             ),
 
-                                                            dcc.Dropdown(
+                                                            dcc.Input(
                                                                 id='X1_slider_value',
-                                                                options=[
-                                                                    {'label': ' K ', 'value': 0},
-                                                                    {'label': ' M ', 'value': 1}
-                                                                ],
-                                                                value=1,
-                                                                style={'width': '30%', 'align': 'right'},
-                                                                searchable=False,
-                                                                clearable=False
-                                                                ),
+                                                                type='number',
+                                                                min=sliders_min[0],
+                                                                max=sliders_max[0],
+                                                                value=sliders_mean[0],
+                                                                style={'width': '20%', 'align': 'right'}
+                                                            ),
                                                         ],
                                                     ),
                                                     html.Hr(style={'size': '33%', 'color': 'grey'}),
@@ -291,7 +280,7 @@ single_page = dcc.Loading(
                                                 html.Div(
                                                     [
                                                         dcc.Slider(id='X2_slider', min=sliders_min[1],
-                                                                   max=sliders_max[1], step=1,
+                                                                   max=sliders_max[1], step=0.1,
                                                                    value=sliders_mean[1],
                                                                    )
                                                     ],
@@ -304,7 +293,6 @@ single_page = dcc.Loading(
                                                     min=sliders_min[1],
                                                     max=sliders_max[1],
                                                     value=sliders_mean[1],
-                                                    step=1,
                                                     style={'width': '20%', 'align': 'right'}
                                                 ),
 
@@ -362,6 +350,13 @@ single_page = dcc.Loading(
 
                            ],
                             style={'width': '33%', 'display': 'inline-block', 'margin': 'center'},
+                           ),
+                           # The prediction result will be displayed and updated here
+                           html.Div([
+                                html.P(),
+                                html.H3(id="prediction_result")
+                           ],
+                               style={'width': '100%', 'display': 'inline-block'},
                            ),
 
                             ], className='prediction_result'),

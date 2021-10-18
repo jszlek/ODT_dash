@@ -64,7 +64,8 @@ h2o.init(
          ip='127.0.0.1',
          #         ice_root=str(my_export_dir),
          name=str(cluster_name),
-         start_h2o=True)
+         start_h2o=True,
+         strict_version_check=False)
 # -------------------------------------
 
 # --------------------------------------
