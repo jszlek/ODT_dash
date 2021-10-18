@@ -62,6 +62,17 @@ single_page = dcc.Loading(
                            dcc.Graph(figure=fig_features_importance),
 
                            html.Hr(style={'size': '100%', 'color': 'grey'}),
+
+                           # The prediction result will be displayed and updated here
+                           html.Div([
+                               html.P(),
+                               html.H3(id="prediction_result")
+                           ],
+                               style={'width': '100%', 'display': 'inline-block'},
+                           ),
+
+                           html.Hr(style={'size': '100%', 'color': 'grey'}),
+
                            html.Div(
                             [
 
@@ -350,13 +361,6 @@ single_page = dcc.Loading(
 
                            ],
                             style={'width': '33%', 'display': 'inline-block', 'margin': 'center'},
-                           ),
-                           # The prediction result will be displayed and updated here
-                           html.Div([
-                                html.P(),
-                                html.H3(id="prediction_result")
-                           ],
-                               style={'width': '100%', 'display': 'inline-block'},
                            ),
 
                             ], className='prediction_result'),

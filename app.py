@@ -122,7 +122,7 @@ try:
             # Sort by 'Total' values
             scaled_var_imp_df_sorted = scaled_var_imp_df.sort_values(by=['Total'], ascending=False)
 
-            # Make additional column with original column idexes
+            # Make additional column with original column indicies
             orig_column_list = list()
 
             for i in scaled_var_imp_df_sorted.index:
@@ -135,7 +135,7 @@ try:
 
 
 except AttributeError:
-    print("An error occured in extracting Feature impotance")
+    print("An error occured in extracting Feature importance")
 
 
 # ------------------------------------------------- #
