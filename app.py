@@ -1,32 +1,17 @@
 # Import libraries
 import dash
-from dash import dcc
-from dash import html
-import dash_bootstrap_components as dbc
-import string
-import statistics
-import pandas as pd
-import numpy as np
-# import plotly.graph_objects as go
-import run_h2o_server
-from run_h2o_server import my_model, open_browser
 import h2o
-from layouts import single_page, batch_page
-from sklearn import preprocessing
-
-import psutil
-import random
-import math
-import csv
-import sys
-import time
-from h2o.automl import H2OAutoML
-
-from dash.dependencies import Input, Output, State
-
 import base64
 import datetime
 import io
+from dash import dcc
+from dash import html
+import dash_bootstrap_components as dbc
+import pandas as pd
+from run_h2o_server import my_model, open_browser
+from layouts import single_page, batch_page
+from sklearn import preprocessing
+from dash.dependencies import Input, Output, State, ALL
 
 # --------------------------------------
 # Load test data
@@ -69,11 +54,10 @@ try:
 
         print(model_list)
 
-        # create two dictionaries for storing variable importance and rmse
+        # create a dict for storing variable importance
         var_imp_models = dict([(key, []) for key in model_list])
-        rmse_df = dict([(key, []) for key in model_list])
 
-        # get variable importance and rmse from base learners
+        # get variable importance from base learners
         for model in model_list:
             tmp_model = h2o.get_model(str(model))
 
@@ -110,7 +94,7 @@ try:
                 df_tmp.index = var_imp_models[str(idx)][0]['variable']
                 scaled_var_imp_df = pd.concat([scaled_var_imp_df, df_tmp], axis=1, sort=False)
 
-            # sum rows by index, NaNs are consdered as zeros
+            # sum rows by index, NaNs are considered as zeros
             # Total sum per row:
             scaled_var_imp_df.loc[:, 'Total'] = scaled_var_imp_df.sum(axis=1)
 
@@ -133,9 +117,11 @@ try:
 
         df_feature_importances = scaled_var_imp_df_sorted
 
-
-except AttributeError:
-    print("An error occured in extracting Feature importance")
+except Exception as e:
+    print(e)
+    html.Div([
+        'There was an error during feature extraction'
+    ])
 
 
 # ------------------------------------------------- #
@@ -251,6 +237,7 @@ def toggle_active_links(pathname):
         return True, False
     return [pathname == f"{links[id][0]}" for id in links.keys()]
 
+
 # Set page for each pathname
 @app.callback(
     Output("page-content", "children"),
@@ -272,25 +259,115 @@ def render_page_content(pathname):
 
 # The callback function will provide one "Output" in the form of a string (=children)
 @app.callback([
-    Output(component_id="prediction_result", component_property="children"),
+    # Output - prediction
+    Output(component_id="single_page", component_property="children"),
+
+    # X?? slider outputs
     Output(component_id="X1_slider", component_property="value"),
     Output(component_id="X2_slider", component_property="value"),
     Output(component_id="X3_slider", component_property="value"),
+
+    # X?? textboxes outputs
     Output(component_id='X1_slider_value', component_property='value'),
     Output(component_id='X2_slider_value', component_property='value'),
     Output(component_id='X3_slider_value', component_property='value')
 ],
     # The values corresponding to the three sliders are obtained by calling their id and value property
     [
+        # X?? Slider inputs
         Input("X1_slider", "value"),
         Input("X2_slider", "value"),
         Input("X3_slider", "value"),
+        Input("X3_slider", "value"),
+        Input("X4_slider", "value"),
+        Input("X5_slider", "value"),
+        Input("X6_slider", "value"),
+        Input("X7_slider", "value"),
+        Input("X8_slider", "value"),
+        Input("X9_slider", "value"),
+        Input("X10_slider", "value"),
+        Input("X11_slider", "value"),
+        Input("X12_slider", "value"),
+        Input("X13_slider", "value"),
+        Input("X14_slider", "value"),
+        Input("X15_slider", "value"),
+        Input("X16_slider", "value"),
+        Input("X17_slider", "value"),
+        Input("X18_slider", "value"),
+        Input("X19_slider", "value"),
+        Input("X20_slider", "value"),
+        Input("X21_slider", "value"),
+        Input("X22_slider", "value"),
+        Input("X23_slider", "value"),
+        Input("X24_slider", "value"),
+        Input("X25_slider", "value"),
+        Input("X26_slider", "value"),
+        Input("X27_slider", "value"),
+        Input("X28_slider", "value"),
+        Input("X29_slider", "value"),
+        Input("X30_slider", "value"),
+        Input("X31_slider", "value"),
+        Input("X32_slider", "value"),
+        Input("X33_slider", "value"),
+        Input("X34_slider", "value"),
+        Input("X35_slider", "value"),
+        Input("X36_slider", "value"),
+        Input("X37_slider", "value"),
+        Input("X38_slider", "value"),
+        Input("X39_slider", "value"),
+
+        # X?? Inputs in textboxes
         Input('X1_slider_value', 'value'),
         Input('X2_slider_value', 'value'),
-        Input('X3_slider_value', 'value')
+        Input('X3_slider_value', 'value'),
+        Input('X4_slider_value', 'value'),
+        Input('X5_slider_value', 'value'),
+        Input('X6_slider_value', 'value'),
+        Input('X7_slider_value', 'value'),
+        Input('X8_slider_value', 'value'),
+        Input('X9_slider_value', 'value'),
+        Input('X10_slider_value', 'value'),
+        Input('X11_slider_value', 'value'),
+        Input('X12_slider_value', 'value'),
+        Input('X13_slider_value', 'value'),
+        Input('X14_slider_value', 'value'),
+        Input('X15_slider_value', 'value'),
+        Input('X16_slider_value', 'value'),
+        Input('X17_slider_value', 'value'),
+        Input('X18_slider_value', 'value'),
+        Input('X19_slider_value', 'value'),
+        Input('X20_slider_value', 'value'),
+        Input('X21_slider_value', 'value'),
+        Input('X22_slider_value', 'value'),
+        Input('X23_slider_value', 'value'),
+        Input('X24_slider_value', 'value'),
+        Input('X25_slider_value', 'value'),
+        Input('X26_slider_value', 'value'),
+        Input('X27_slider_value', 'value'),
+        Input('X28_slider_value', 'value'),
+        Input('X29_slider_value', 'value'),
+        Input('X30_slider_value', 'value'),
+        Input('X31_slider_value', 'value'),
+        Input('X32_slider_value', 'value'),
+        Input('X33_slider_value', 'value'),
+        Input('X34_slider_value', 'value'),
+        Input('X35_slider_value', 'value'),
+        Input('X36_slider_value', 'value'),
+        Input('X37_slider_value', 'value'),
+        Input('X38_slider_value', 'value'),
+        Input('X39_slider_value', 'value'),
+
+
     ])
 # The input variable are set in the same order as the callback Inputs
-def update_prediction(X1, X2, X3, X1_value, X2_value, X3_value):
+def update_prediction(X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20,
+                      X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X31, X32, X33, X34, X35, X36, X37, X38, X39,
+                      X1_value, X2_value, X3_value, X4_value, X5_value, X6_value, X7_value, X8_value, X9_value,
+                      X10_value, X11_value, X12_value, X13_value, X14_value, X15_value, X16_value, X17_value, X18_value,
+                      X19_value, X20_value, X21_value, X22_value, X23_value, X24_value, X25_value, X26_value, X27_value,
+                      X28_value, X29_value, X30_value, X31_value, X32_value, X33_value, X34_value, X35_value, X36_value,
+                      X37_value, X38_value, X39_value
+                      ):
 
     ctx = dash.callback_context
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
@@ -325,15 +402,50 @@ def update_prediction(X1, X2, X3, X1_value, X2_value, X3_value):
     else:
         X3_value
 
-
     # We create a NumPy array in the form of the original features
-    # ["Pressure","Viscosity","Particles_size", "Temperature","Inlet_flow", "Rotating_Speed","pH","Color_density"]
-    # Except for the X1, X2 and X3, all other non-influencing parameters are set to their mean
+    # ["API_perc","Mannitol_perc",	"MCC_perc",	"Lactose_perc", (...)]
     input_X = my_data.copy()
     input_X = input_X.iloc[[0]]
     input_X.loc[:, 'API_perc'] = X1
     input_X.loc[:, 'Mannitol_perc'] = X2
     input_X.loc[:, 'MCC_perc'] = X3
+    input_X.loc[:, 'Lactose_perc'] = X4
+    input_X.loc[:, 'Calcium_silicate_perc'] = X5
+    input_X.loc[:, 'HPMC_perc'] = X6
+    input_X.loc[:, 'Sodium_bicarbonate_perc'] = X7
+    input_X.loc[:, 'SSG_perc'] = X8
+    input_X.loc[:, 'CC_Na_perc'] = X9
+    input_X.loc[:, 'Crospovidone_perc'] = X10
+    input_X.loc[:, 'L_HPC_perc'] = X11
+    input_X.loc[:, 'Pregelatinized_starch_perc'] = X12
+    input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = X13
+    input_X.loc[:, 'Mg_stearate_perc'] = X14
+    input_X.loc[:, 'Aerosil_perc'] = X15
+    input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = X16
+    input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = X17
+    input_X.loc[:, 'Talc_perc'] = X18
+    input_X.loc[:, 'X2HP_bCD_perc'] = X19
+    input_X.loc[:, 'bCD_perc'] = X20
+    input_X.loc[:, 'CD_methacrylate_perc'] = X21
+    input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = X22
+    input_X.loc[:, 'Eudragit_EPO_perc'] = X23
+    input_X.loc[:, 'Poloxamer_188_perc'] = X24
+    input_X.loc[:, 'PVP_perc'] = X25
+    input_X.loc[:, 'SLS_perc'] = X26
+    input_X.loc[:, 'PVA_perc'] = X27
+    input_X.loc[:, 'Camphor_perc'] = X28
+    input_X.loc[:, 'Hardness_N'] = X29
+    input_X.loc[:, 'GATS7i'] = X30
+    input_X.loc[:, 'Thickness_mm'] = X31
+    input_X.loc[:, 'GGI7'] = X32
+    input_X.loc[:, 'MATS4p'] = X33
+    input_X.loc[:, 'MIC2'] = X34
+    input_X.loc[:, 'Punch_mm'] = X35
+    input_X.loc[:, 'nT12Ring'] = X36
+    input_X.loc[:, 'XLogP'] = X37
+    input_X.loc[:, 'GATS7p'] = X38
+    input_X.loc[:, 'nF8HeteroRing'] = X39
+
 
     input_X = pd.DataFrame(input_X)
 
@@ -349,21 +461,23 @@ def update_prediction(X1, X2, X3, X1_value, X2_value, X3_value):
     # And retuned to the Output of the callback function
     return [
             "Prediction: {}".format(round(prediction, 1)),
-            X1,
-            X2,
-            X3,
-            X1_value,
-            X2_value,
-            X3_value,
+            X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20,
+            X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X31, X32, X33, X34, X35, X36, X37, X38, X39,
+            X1_value, X2_value, X3_value, X4_value, X5_value, X6_value, X7_value, X8_value, X9_value,
+            X10_value, X11_value, X12_value, X13_value, X14_value, X15_value, X16_value, X17_value, X18_value,
+            X19_value, X20_value, X21_value, X22_value, X23_value, X24_value, X25_value, X26_value, X27_value,
+            X28_value, X29_value, X30_value, X31_value, X32_value, X33_value, X34_value, X35_value, X36_value,
+            X37_value, X38_value, X39_value
            ]
 
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
+    df = None
 
     decoded = base64.b64decode(content_string)
     try:
-        if 'csv' in filename:
+        if ('csv' or 'txt') in filename:
             # Assume that the user uploaded a CSV file
             df = pd.read_csv(
                 io.StringIO(decoded.decode('utf-8')))
@@ -382,7 +496,7 @@ def parse_contents(contents, filename, date):
             h2o_df = h2o.H2OFrame(df)
             predicted_values = my_model.predict(h2o_df)
             predicted_values = predicted_values.as_data_frame()
-            df['predicted'] = predicted_values
+            df.insert(loc=0, column='predicted', value=predicted_values)
 
     except Exception as e:
         print(e)
@@ -394,13 +508,7 @@ def parse_contents(contents, filename, date):
         html.H5(filename),
         html.H6(datetime.datetime.fromtimestamp(date)),
 
-
-
         dbc.Table.from_dataframe(df, striped=True, bordered=True, hover=True),
-#            (
-#            data=predicted_table.to_dict('records'),
-#            columns=[{'name': i, 'id': i} for i in predicted_table.columns]
-#        ),
 
         html.Hr(),  # horizontal line
 
