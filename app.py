@@ -284,7 +284,7 @@ def render_page_content(pathname):
     # Output(component_id='X3_slider_value', component_property='value')
 ],
     # The values corresponding to the three sliders are obtained by calling their id and value property
-    [
+
         # X?? Slider inputs
         Input({'type': 'X_slider', 'index': ALL}, 'value'),
         Input({'type': 'X_slider_value', 'index': ALL}, 'value'),
@@ -371,93 +371,94 @@ def render_page_content(pathname):
         # Input('X39_slider_value', 'value'),
         #
 
-    ])
+    )
 # The input variable are set in the same order as the callback Inputs
-def update_prediction(X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20,
-                      X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X31, X32, X33, X34, X35, X36, X37, X38, X39,
-                      X1_value, X2_value, X3_value, X4_value, X5_value, X6_value, X7_value, X8_value, X9_value,
-                      X10_value, X11_value, X12_value, X13_value, X14_value, X15_value, X16_value, X17_value, X18_value,
-                      X19_value, X20_value, X21_value, X22_value, X23_value, X24_value, X25_value, X26_value, X27_value,
-                      X28_value, X29_value, X30_value, X31_value, X32_value, X33_value, X34_value, X35_value, X36_value,
-                      X37_value, X38_value, X39_value
+def update_prediction(X_slider, X_slider_value
+        # X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20,
+        #               X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X31, X32, X33, X34, X35, X36, X37, X38, X39,
+        #               X1_value, X2_value, X3_value, X4_value, X5_value, X6_value, X7_value, X8_value, X9_value,
+        #               X10_value, X11_value, X12_value, X13_value, X14_value, X15_value, X16_value, X17_value, X18_value,
+        #               X19_value, X20_value, X21_value, X22_value, X23_value, X24_value, X25_value, X26_value, X27_value,
+        #               X28_value, X29_value, X30_value, X31_value, X32_value, X33_value, X34_value, X35_value, X36_value,
+        #               X37_value, X38_value, X39_value
                       ):
 
     ctx = dash.callback_context
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-    if trigger_id == "X1_slider_value":
-        X1 = X1_value
+    if trigger_id == "X_slider_value":
+        X_slider = X_slider_value
     else:
-        X1
+        X_slider
 
-    if trigger_id == "X1_slider":
-        X1_value = X1
+    if trigger_id == "X_slider":
+        X_slider_value = X_slider
     else:
-        X1_value
+        X_slider_value
 
-    if trigger_id == "X2_slider_value":
-        X2 = X2_value
-    else:
-        X2
-
-    if trigger_id == "X2_slider":
-        X2_value = X2
-    else:
-        X2_value
-
-    if trigger_id == "X3_slider_value":
-        X3 = X3_value
-    else:
-        X3
-
-    if trigger_id == "X3_slider":
-        X3_value = X3
-    else:
-        X3_value
+    # if trigger_id == "X2_slider_value":
+    #     X2 = X2_value
+    # else:
+    #     X2
+    #
+    # if trigger_id == "X2_slider":
+    #     X2_value = X2
+    # else:
+    #     X2_value
+    #
+    # if trigger_id == "X3_slider_value":
+    #     X3 = X3_value
+    # else:
+    #     X3
+    #
+    # if trigger_id == "X3_slider":
+    #     X3_value = X3
+    # else:
+    #     X3_value
 
     # We create a NumPy array in the form of the original features
     # ["API_perc","Mannitol_perc",	"MCC_perc",	"Lactose_perc", (...)]
     input_X = my_data.copy()
     input_X = input_X.iloc[[0]]
-    input_X.loc[:, 'API_perc'] = X1
-    input_X.loc[:, 'Mannitol_perc'] = X2
-    input_X.loc[:, 'MCC_perc'] = X3
-    input_X.loc[:, 'Lactose_perc'] = X4
-    input_X.loc[:, 'Calcium_silicate_perc'] = X5
-    input_X.loc[:, 'HPMC_perc'] = X6
-    input_X.loc[:, 'Sodium_bicarbonate_perc'] = X7
-    input_X.loc[:, 'SSG_perc'] = X8
-    input_X.loc[:, 'CC_Na_perc'] = X9
-    input_X.loc[:, 'Crospovidone_perc'] = X10
-    input_X.loc[:, 'L_HPC_perc'] = X11
-    input_X.loc[:, 'Pregelatinized_starch_perc'] = X12
-    input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = X13
-    input_X.loc[:, 'Mg_stearate_perc'] = X14
-    input_X.loc[:, 'Aerosil_perc'] = X15
-    input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = X16
-    input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = X17
-    input_X.loc[:, 'Talc_perc'] = X18
-    input_X.loc[:, 'X2HP_bCD_perc'] = X19
-    input_X.loc[:, 'bCD_perc'] = X20
-    input_X.loc[:, 'CD_methacrylate_perc'] = X21
-    input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = X22
-    input_X.loc[:, 'Eudragit_EPO_perc'] = X23
-    input_X.loc[:, 'Poloxamer_188_perc'] = X24
-    input_X.loc[:, 'PVP_perc'] = X25
-    input_X.loc[:, 'SLS_perc'] = X26
-    input_X.loc[:, 'PVA_perc'] = X27
-    input_X.loc[:, 'Camphor_perc'] = X28
-    input_X.loc[:, 'Hardness_N'] = X29
-    input_X.loc[:, 'GATS7i'] = X30
-    input_X.loc[:, 'Thickness_mm'] = X31
-    input_X.loc[:, 'GGI7'] = X32
-    input_X.loc[:, 'MATS4p'] = X33
-    input_X.loc[:, 'MIC2'] = X34
-    input_X.loc[:, 'Punch_mm'] = X35
-    input_X.loc[:, 'nT12Ring'] = X36
-    input_X.loc[:, 'XLogP'] = X37
-    input_X.loc[:, 'GATS7p'] = X38
-    input_X.loc[:, 'nF8HeteroRing'] = X39
+    input_X.loc[:, 'API_perc'] = X_slider[0]
+    input_X.loc[:, 'Mannitol_perc'] = X_slider[1]
+    input_X.loc[:, 'MCC_perc'] = X_slider[2]
+    input_X.loc[:, 'Lactose_perc'] = X_slider[3]
+    input_X.loc[:, 'Calcium_silicate_perc'] = X_slider[4]
+    input_X.loc[:, 'HPMC_perc'] = X_slider[5]
+    input_X.loc[:, 'Sodium_bicarbonate_perc'] = X_slider[6]
+    input_X.loc[:, 'SSG_perc'] = X_slider[7]
+    input_X.loc[:, 'CC_Na_perc'] = X_slider[8]
+    input_X.loc[:, 'Crospovidone_perc'] = X_slider[9]
+    input_X.loc[:, 'L_HPC_perc'] = X_slider[10]
+    input_X.loc[:, 'Pregelatinized_starch_perc'] = X_slider[11]
+    input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = X_slider[12]
+    input_X.loc[:, 'Mg_stearate_perc'] = X_slider[13]
+    input_X.loc[:, 'Aerosil_perc'] = X_slider[14]
+    input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = X_slider[15]
+    input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = X_slider[16]
+    input_X.loc[:, 'Talc_perc'] = X_slider[17]
+    input_X.loc[:, 'X2HP_bCD_perc'] = X_slider[18]
+    input_X.loc[:, 'bCD_perc'] = X_slider[19]
+    input_X.loc[:, 'CD_methacrylate_perc'] = X_slider[20]
+    input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = X_slider[21]
+    input_X.loc[:, 'Eudragit_EPO_perc'] = X_slider[22]
+    input_X.loc[:, 'Poloxamer_188_perc'] = X_slider[23]
+    input_X.loc[:, 'PVP_perc'] = X_slider[24]
+    input_X.loc[:, 'SLS_perc'] = X_slider[25]
+    input_X.loc[:, 'PVA_perc'] = X_slider[26]
+    input_X.loc[:, 'Camphor_perc'] = X_slider[27]
+    input_X.loc[:, 'Hardness_N'] = X_slider[28]
+    input_X.loc[:, 'GATS7i'] = X_slider[29]
+    input_X.loc[:, 'Thickness_mm'] = X_slider[30]
+    input_X.loc[:, 'GGI7'] = X_slider[31]
+    input_X.loc[:, 'MATS4p'] = X_slider[32]
+    input_X.loc[:, 'MIC2'] = X_slider[33]
+    input_X.loc[:, 'Punch_mm'] = X_slider[34]
+    input_X.loc[:, 'nT12Ring'] = X_slider[35]
+    input_X.loc[:, 'XLogP'] = X_slider[36]
+    input_X.loc[:, 'GATS7p'] = X_slider[37]
+    input_X.loc[:, 'nF8HeteroRing'] = X_slider[38]
 
 
     input_X = pd.DataFrame(input_X)
@@ -474,13 +475,7 @@ def update_prediction(X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X1
     # And retuned to the Output of the callback function
     return [
             "Prediction: {}".format(round(prediction, 1)),
-            X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20,
-            X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X31, X32, X33, X34, X35, X36, X37, X38, X39,
-            X1_value, X2_value, X3_value, X4_value, X5_value, X6_value, X7_value, X8_value, X9_value,
-            X10_value, X11_value, X12_value, X13_value, X14_value, X15_value, X16_value, X17_value, X18_value,
-            X19_value, X20_value, X21_value, X22_value, X23_value, X24_value, X25_value, X26_value, X27_value,
-            X28_value, X29_value, X30_value, X31_value, X32_value, X33_value, X34_value, X35_value, X36_value,
-            X37_value, X38_value, X39_value
+            X_slider, X_slider_value
            ]
 
 
