@@ -807,7 +807,38 @@ single_page = dcc.Loading(
                                             width={"size": 4, "order": 2},
                                         ),
                                         dbc.Col(
-                                            html.Div("The third of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[20],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 20},
+                                                                           min=sliders_min[20],
+                                                                           max=sliders_max[20], step=0.1,
+                                                                           value=sliders_mean[20],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 20},
+                                                            type='number',
+                                                            min=sliders_min[20],
+                                                            max=sliders_max[20],
+                                                            value=sliders_mean[20],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 3},
                                         ),
                                     ]
@@ -816,15 +847,108 @@ single_page = dcc.Loading(
                                dbc.Row(                                             # Eighth row
                                     [
                                         dbc.Col(
-                                            html.Div("The first of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[21],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 21},
+                                                                           min=sliders_min[21],
+                                                                           max=sliders_max[21], step=0.1,
+                                                                           value=sliders_mean[21],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 21},
+                                                            type='number',
+                                                            min=sliders_min[21],
+                                                            max=sliders_max[21],
+                                                            value=sliders_mean[21],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 1},
                                         ),
                                         dbc.Col(
-                                            html.Div("The second of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[22],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 22},
+                                                                           min=sliders_min[22],
+                                                                           max=sliders_max[22], step=0.1,
+                                                                           value=sliders_mean[22],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 22},
+                                                            type='number',
+                                                            min=sliders_min[22],
+                                                            max=sliders_max[22],
+                                                            value=sliders_mean[22],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 2},
                                         ),
                                         dbc.Col(
-                                            html.Div("The third of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[23],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 23},
+                                                                           min=sliders_min[23],
+                                                                           max=sliders_max[23], step=0.1,
+                                                                           value=sliders_mean[23],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 23},
+                                                            type='number',
+                                                            min=sliders_min[23],
+                                                            max=sliders_max[23],
+                                                            value=sliders_mean[23],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 3},
                                         ),
                                     ]
@@ -833,15 +957,108 @@ single_page = dcc.Loading(
                                dbc.Row(                                             # Ninth row
                                     [
                                         dbc.Col(
-                                            html.Div("The first of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[24],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 24},
+                                                                           min=sliders_min[24],
+                                                                           max=sliders_max[24], step=0.1,
+                                                                           value=sliders_mean[24],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 24},
+                                                            type='number',
+                                                            min=sliders_min[24],
+                                                            max=sliders_max[24],
+                                                            value=sliders_mean[24],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 1},
                                         ),
                                         dbc.Col(
-                                            html.Div("The second of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[25],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 25},
+                                                                           min=sliders_min[25],
+                                                                           max=sliders_max[25], step=0.1,
+                                                                           value=sliders_mean[25],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 25},
+                                                            type='number',
+                                                            min=sliders_min[25],
+                                                            max=sliders_max[25],
+                                                            value=sliders_mean[25],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 2},
                                         ),
                                         dbc.Col(
-                                            html.Div("The third of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[26],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 26},
+                                                                           min=sliders_min[26],
+                                                                           max=sliders_max[26], step=0.1,
+                                                                           value=sliders_mean[26],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 26},
+                                                            type='number',
+                                                            min=sliders_min[26],
+                                                            max=sliders_max[26],
+                                                            value=sliders_mean[26],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 3},
                                         ),
                                     ]
@@ -850,111 +1067,371 @@ single_page = dcc.Loading(
                                dbc.Row(                                             # Tenth row
                                     [
                                         dbc.Col(
-                                            html.Div("The first of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[27],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 28},
+                                                                           min=sliders_min[28],
+                                                                           max=sliders_max[28], step=0.1,
+                                                                           value=sliders_mean[28],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 29},
+                                                            type='number',
+                                                            min=sliders_min[29],
+                                                            max=sliders_max[29],
+                                                            value=sliders_mean[29],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 1},
                                         ),
                                         dbc.Col(
-                                            html.Div("The second of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[30],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 30},
+                                                                           min=sliders_min[30],
+                                                                           max=sliders_max[30], step=0.1,
+                                                                           value=sliders_mean[30],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 30},
+                                                            type='number',
+                                                            min=sliders_min[30],
+                                                            max=sliders_max[30],
+                                                            value=sliders_mean[30],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 2},
                                         ),
                                         dbc.Col(
-                                            html.Div("The third of three columns"),
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[31],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 31},
+                                                                           min=sliders_min[31],
+                                                                           max=sliders_max[31], step=0.1,
+                                                                           value=sliders_mean[31],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 31},
+                                                            type='number',
+                                                            min=sliders_min[31],
+                                                            max=sliders_max[31],
+                                                            value=sliders_mean[31],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
                                             width={"size": 4, "order": 3},
                                         ),
                                     ]
                                 ),
-                            ]),
 
-                           html.Div([
-                               dbc.Row([
-
-
-                                       html.P(
-                                           sliders_label[1],
-                                           style={'width': '100%', 'align': 'left'}
-                                        ),
-
-                                       html.Div([
-                                           dbc.Col(
-                                            [
-                                                # The Dash Slider is built according to Feature #2 ranges
-                                                html.Div(
+                               dbc.Row(  # Eleventh row
+                                    [
+                                        dbc.Col(
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[32],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
                                                     [
-                                                        dcc.Slider(id='X2_slider', min=sliders_min[1],
-                                                                   max=sliders_max[1], step=0.1,
-                                                                   value=sliders_mean[1],
-                                                                   )
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 32},
+                                                                           min=sliders_min[32],
+                                                                           max=sliders_max[32], step=0.1,
+                                                                           value=sliders_mean[32],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
+
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 32},
+                                                            type='number',
+                                                            min=sliders_min[32],
+                                                            max=sliders_max[32],
+                                                            value=sliders_mean[32],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
                                                     ],
-                                                    style={'width': '80%', 'justify-content': 'center', 'align-items': 'center'}
                                                 ),
-
-                                                dcc.Input(
-                                                    id='X2_slider_value',
-                                                    type='number',
-                                                    min=sliders_min[1],
-                                                    max=sliders_max[1],
-                                                    value=sliders_mean[1],
-                                                    style={'width': '20%', 'align': 'right'}
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
+                                            width={"size": 4, "order": 1},
+                                        ),
+                                        dbc.Col(
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[33],
+                                                    style={'width': '100%', 'align': 'left'}
                                                 ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 33},
+                                                                           min=sliders_min[33],
+                                                                           max=sliders_max[33], step=0.1,
+                                                                           value=sliders_mean[33],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
 
-                                            ]
-                                           )
-                                       ]),
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 33},
+                                                            type='number',
+                                                            min=sliders_min[33],
+                                                            max=sliders_max[33],
+                                                            value=sliders_mean[33],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
+                                            width={"size": 4, "order": 2},
+                                        ),
+                                        dbc.Col(
+                                            html.Div([
+                                                html.P(
+                                                    sliders_label[34],
+                                                    style={'width': '100%', 'align': 'left'}
+                                                ),
+                                                dbc.Row(
+                                                    [
+                                                        # The Dash Slider is built according to Feature #19 ranges
+                                                        html.Div(
+                                                            [
+                                                                dcc.Slider(id={'type': 'X_slider', 'index': 34},
+                                                                           min=sliders_min[34],
+                                                                           max=sliders_max[34], step=0.1,
+                                                                           value=sliders_mean[34],
+                                                                           )
+                                                            ],
+                                                            style={'width': '70%', 'justify-content': 'left',
+                                                                   'align-items': 'left'}
+                                                        ),
 
-                                       html.Hr(style={'size': '15%', 'color' : 'grey'}),
+                                                        dcc.Input(
+                                                            id={'type': 'X_slider_value', 'index': 34},
+                                                            type='number',
+                                                            min=sliders_min[34],
+                                                            max=sliders_max[34],
+                                                            value=sliders_mean[34],
+                                                            style={'width': '20%', 'align': 'right'}
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                            ]),
+                                            width={"size": 4, "order": 3},
+                                        ),
+                                    ]
+                                ),
 
+                            dbc.Row([               # Twelve row
+                               dbc.Col(
+                                   html.Div([
                                        html.P(
-                                               sliders_label[2],
-                                               style={'width': '100%', 'align': 'left'}
-                                           ),
-                                       html.Div([
-                                           dbc.Col(
-                                               [
-                                                   # The Dash Slider is built according to Feature #3 ranges
-                                                   html.Div(
-                                                       [
-                                                           dcc.Slider(id='X3_slider', min=sliders_min[2],
-                                                                      max=sliders_max[2], step=0.1,
-                                                                      value=sliders_mean[2],
-                                                                      )
-                                                       ],
-                                                       style={'width': '80%', 'justify-content': 'center',
-                                                              'align-items': 'center'}
-                                                   ),
-
-                                                   dcc.Input(
-                                                       id='X3_slider_value',
-                                                       type='number',
-                                                       min=sliders_min[2],
-                                                       max=sliders_max[2],
-                                                       value=sliders_mean[2],
-                                                       style={'width': '20%', 'align': 'right'}
-                                                   ),
-
-                                               ], width={"size": 4, "order": 3},
-                                           )
-                                       ]),
-
-                                       html.Hr(style={'size': '15%', 'color': 'grey'}),
-
-                                       ],
-                                    style={'width': '33%', 'display': 'inline-block', 'align': 'left'},
+                                           sliders_label[35],
+                                           style={'width': '100%', 'align': 'left'}
                                        ),
-                               dbc.Row([
-                                   dbc.Col([html.Div(html.P('my next col'))])
+                                       dbc.Row(
+                                           [
+                                               # The Dash Slider is built according to Feature #19 ranges
+                                               html.Div(
+                                                   [
+                                                       dcc.Slider(id={'type': 'X_slider', 'index': 35},
+                                                                  min=sliders_min[35],
+                                                                  max=sliders_max[35], step=0.1,
+                                                                  value=sliders_mean[35],
+                                                                  )
+                                                   ],
+                                                   style={'width': '70%', 'justify-content': 'left',
+                                                          'align-items': 'left'}
+                                               ),
 
-                               ],
-                                   style={'width': '33%', 'display': 'inline-block', 'margin': 'center'},
-                               )
-                               ]),
-                           html.Div([
+                                               dcc.Input(
+                                                   id={'type': 'X_slider_value', 'index': 35},
+                                                   type='number',
+                                                   min=sliders_min[35],
+                                                   max=sliders_max[35],
+                                                   value=sliders_mean[35],
+                                                   style={'width': '20%', 'align': 'right'}
+                                               ),
+                                           ],
+                                       ),
+                                       html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                   ]),
+                                   width={"size": 4, "order": 1},
+                               ),
+                               dbc.Col(
+                                   html.Div([
+                                       html.P(
+                                           sliders_label[36],
+                                           style={'width': '100%', 'align': 'left'}
+                                       ),
+                                       dbc.Row(
+                                           [
+                                               # The Dash Slider is built according to Feature #19 ranges
+                                               html.Div(
+                                                   [
+                                                       dcc.Slider(id={'type': 'X_slider', 'index': 36},
+                                                                  min=sliders_min[36],
+                                                                  max=sliders_max[36], step=0.1,
+                                                                  value=sliders_mean[36],
+                                                                  )
+                                                   ],
+                                                   style={'width': '70%', 'justify-content': 'left',
+                                                          'align-items': 'left'}
+                                               ),
 
-                           ],
-                            style={'width': '33%', 'display': 'inline-block', 'margin': 'center'},
-                           ),
+                                               dcc.Input(
+                                                   id={'type': 'X_slider_value', 'index': 36},
+                                                   type='number',
+                                                   min=sliders_min[36],
+                                                   max=sliders_max[36],
+                                                   value=sliders_mean[36],
+                                                   style={'width': '20%', 'align': 'right'}
+                                               ),
+                                           ],
+                                       ),
+                                       html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                   ]),
+                                   width={"size": 4, "order": 2},
+                               ),
+                               dbc.Col(
+                                   html.Div([
+                                       html.P(
+                                           sliders_label[37],
+                                           style={'width': '100%', 'align': 'left'}
+                                       )
+                                       ]),
+                                       dbc.Row(
+                                           [
+                                               # The Dash Slider is built according to Feature #19 ranges
+                                               html.Div(
+                                                   [
+                                                       dcc.Slider(id={'type': 'X_slider', 'index': 37},
+                                                                  min=sliders_min[37],
+                                                                  max=sliders_max[37], step=0.1,
+                                                                  value=sliders_mean[37],
+                                                                  )
+                                                   ],
+                                                   style={'width': '70%', 'justify-content': 'left',
+                                                          'align-items': 'left'}
+                                               ),
 
-                            ], className='prediction_result'),
-                   )
+                                               dcc.Input(
+                                                   id={'type': 'X_slider_value', 'index': 37},
+                                                   type='number',
+                                                   min=sliders_min[37],
+                                                   max=sliders_max[37],
+                                                   value=sliders_mean[37],
+                                                   style={'width': '20%', 'align': 'right'}
+                                               ),
+                                           ],
+                                       ),
+                                       html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                   ], width={"size": 4, "order": 3}),
+                            ]),
+                       dbc.Row(  # Twelve row
+                           [
+                               dbc.Col(
+                                   html.Div([
+                                       html.P(
+                                           sliders_label[38],
+                                           style={'width': '100%', 'align': 'left'}
+                                       ),
+                                       dbc.Row(
+                                           [
+                                               # The Dash Slider is built according to Feature #19 ranges
+                                               html.Div(
+                                                   [
+                                                       dcc.Slider(id={'type': 'X_slider', 'index': 38},
+                                                                  min=sliders_min[38],
+                                                                  max=sliders_max[38], step=0.1,
+                                                                  value=sliders_mean[38],
+                                                                  )
+                                                   ],
+                                                   style={'width': '70%', 'justify-content': 'left',
+                                                          'align-items': 'left'}
+                                               ),
+
+                                               dcc.Input(
+                                                   id={'type': 'X_slider_value', 'index': 38},
+                                                   type='number',
+                                                   min=sliders_min[38],
+                                                   max=sliders_max[38],
+                                                   value=sliders_mean[38],
+                                                   style={'width': '20%', 'align': 'right'}
+                                                   ),
+                                               ],
+                                           ),
+                                           html.Hr(style={'size': '33%', 'color': 'grey'}),
+                                       ]),
+                                   width={"size": 4, "order": 1},
+                                   )],
+                            )
+                        ]),
+                        ]),
+                            className='prediction_result')
+
 
 batch_page = dcc.Loading(
 

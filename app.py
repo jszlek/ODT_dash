@@ -260,7 +260,7 @@ def render_page_content(pathname):
 # The callback function will provide one "Output" in the form of a string (=children)
 @app.callback([
     # Output - prediction
-    Output(component_id="single_page", component_property="children"),
+    Output(component_id="prediction_result", component_property="children"),
 
     Output({
         'type': 'X_slider',
