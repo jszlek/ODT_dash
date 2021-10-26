@@ -8,7 +8,7 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 import pandas as pd
-from run_h2o_server import my_model, open_browser
+from run_h2o_server import RunBeforeDash, my_model, open_browser
 from layouts import single_page, batch_page
 from sklearn import preprocessing
 from dash.dependencies import Input, Output, State, ALL
@@ -541,10 +541,7 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
         return children
 
 
-# open browser
-open_browser()
-
-
-
 if __name__ == "__main__":
+    # open browser
+    open_browser()
     app.run_server(host='0.0.0.0', port=8050, debug=True)
