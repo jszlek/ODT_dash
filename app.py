@@ -258,163 +258,22 @@ def render_page_content(pathname):
 
 
 # The callback function will provide one "Output" in the form of a string (=children)
-@app.callback([
+@app.callback(
+    [
+    Output({'type': 'X_slider', 'index': ALL}, 'value'),
+    Output({'type': 'X_slider_value', 'index': ALL}, 'value'),
     # Output - prediction
-    Output(component_id="prediction_result", component_property="children"),
-
-    Output({
-        'type': 'X_slider',
-        'id': ALL
-    }, 'value'),
-
-    Output({
-        'type': 'X_slider_value',
-        'id': ALL
-    }, 'value'
-    )
-
-    # X?? slider outputs
-    # Output(component_id="X1_slider", component_property="value"),
-    # Output(component_id="X2_slider", component_property="value"),
-    # Output(component_id="X3_slider", component_property="value"),
-    #
-    # # X?? textboxes outputs
-    # Output(component_id='X1_slider_value', component_property='value'),
-    # Output(component_id='X2_slider_value', component_property='value'),
-    # Output(component_id='X3_slider_value', component_property='value')
-],
-    # The values corresponding to the three sliders are obtained by calling their id and value property
-
-        # X?? Slider inputs
-        Input({'type': 'X_slider', 'index': ALL}, 'value'),
-        Input({'type': 'X_slider_value', 'index': ALL}, 'value'),
-        # Input("X1_slider", "value"),
-        # Input("X2_slider", "value"),
-        # Input("X3_slider", "value"),
-        # Input("X3_slider", "value"),
-        # Input("X4_slider", "value"),
-        # Input("X5_slider", "value"),
-        # Input("X6_slider", "value"),
-        # Input("X7_slider", "value"),
-        # Input("X8_slider", "value"),
-        # Input("X9_slider", "value"),
-        # Input("X10_slider", "value"),
-        # Input("X11_slider", "value"),
-        # Input("X12_slider", "value"),
-        # Input("X13_slider", "value"),
-        # Input("X14_slider", "value"),
-        # Input("X15_slider", "value"),
-        # Input("X16_slider", "value"),
-        # Input("X17_slider", "value"),
-        # Input("X18_slider", "value"),
-        # Input("X19_slider", "value"),
-        # Input("X20_slider", "value"),
-        # Input("X21_slider", "value"),
-        # Input("X22_slider", "value"),
-        # Input("X23_slider", "value"),
-        # Input("X24_slider", "value"),
-        # Input("X25_slider", "value"),
-        # Input("X26_slider", "value"),
-        # Input("X27_slider", "value"),
-        # Input("X28_slider", "value"),
-        # Input("X29_slider", "value"),
-        # Input("X30_slider", "value"),
-        # Input("X31_slider", "value"),
-        # Input("X32_slider", "value"),
-        # Input("X33_slider", "value"),
-        # Input("X34_slider", "value"),
-        # Input("X35_slider", "value"),
-        # Input("X36_slider", "value"),
-        # Input("X37_slider", "value"),
-        # Input("X38_slider", "value"),
-        # Input("X39_slider", "value"),
-        #
-        # # X?? Inputs in textboxes
-        # Input('X1_slider_value', 'value'),
-        # Input('X2_slider_value', 'value'),
-        # Input('X3_slider_value', 'value'),
-        # Input('X4_slider_value', 'value'),
-        # Input('X5_slider_value', 'value'),
-        # Input('X6_slider_value', 'value'),
-        # Input('X7_slider_value', 'value'),
-        # Input('X8_slider_value', 'value'),
-        # Input('X9_slider_value', 'value'),
-        # Input('X10_slider_value', 'value'),
-        # Input('X11_slider_value', 'value'),
-        # Input('X12_slider_value', 'value'),
-        # Input('X13_slider_value', 'value'),
-        # Input('X14_slider_value', 'value'),
-        # Input('X15_slider_value', 'value'),
-        # Input('X16_slider_value', 'value'),
-        # Input('X17_slider_value', 'value'),
-        # Input('X18_slider_value', 'value'),
-        # Input('X19_slider_value', 'value'),
-        # Input('X20_slider_value', 'value'),
-        # Input('X21_slider_value', 'value'),
-        # Input('X22_slider_value', 'value'),
-        # Input('X23_slider_value', 'value'),
-        # Input('X24_slider_value', 'value'),
-        # Input('X25_slider_value', 'value'),
-        # Input('X26_slider_value', 'value'),
-        # Input('X27_slider_value', 'value'),
-        # Input('X28_slider_value', 'value'),
-        # Input('X29_slider_value', 'value'),
-        # Input('X30_slider_value', 'value'),
-        # Input('X31_slider_value', 'value'),
-        # Input('X32_slider_value', 'value'),
-        # Input('X33_slider_value', 'value'),
-        # Input('X34_slider_value', 'value'),
-        # Input('X35_slider_value', 'value'),
-        # Input('X36_slider_value', 'value'),
-        # Input('X37_slider_value', 'value'),
-        # Input('X38_slider_value', 'value'),
-        # Input('X39_slider_value', 'value'),
-        #
-
+    Output(component_id="prediction_result", component_property="children")
+    ],
+    Input({'type': 'X_slider', 'index': ALL}, 'value'),
+    Input({'type': 'X_slider_value', 'index': ALL}, 'value'),
     )
 # The input variable are set in the same order as the callback Inputs
-def update_prediction(X_slider, X_slider_value
-        # X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20,
-        #               X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X31, X32, X33, X34, X35, X36, X37, X38, X39,
-        #               X1_value, X2_value, X3_value, X4_value, X5_value, X6_value, X7_value, X8_value, X9_value,
-        #               X10_value, X11_value, X12_value, X13_value, X14_value, X15_value, X16_value, X17_value, X18_value,
-        #               X19_value, X20_value, X21_value, X22_value, X23_value, X24_value, X25_value, X26_value, X27_value,
-        #               X28_value, X29_value, X30_value, X31_value, X32_value, X33_value, X34_value, X35_value, X36_value,
-        #               X37_value, X38_value, X39_value
-                      ):
+def update_sliders(X_slider, X_slider_value):
 
     ctx = dash.callback_context
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-    if trigger_id == "X_slider_value":
-        X_slider = X_slider_value
-    else:
-        X_slider
-
-    if trigger_id == "X_slider":
-        X_slider_value = X_slider
-    else:
-        X_slider_value
-
-    # if trigger_id == "X2_slider_value":
-    #     X2 = X2_value
-    # else:
-    #     X2
-    #
-    # if trigger_id == "X2_slider":
-    #     X2_value = X2
-    # else:
-    #     X2_value
-    #
-    # if trigger_id == "X3_slider_value":
-    #     X3 = X3_value
-    # else:
-    #     X3
-    #
-    # if trigger_id == "X3_slider":
-    #     X3_value = X3
-    # else:
-    #     X3_value
+    value = X_slider if trigger_id == "X_slider_value" else X_slider
 
     # We create a NumPy array in the form of the original features
     # ["API_perc","Mannitol_perc",	"MCC_perc",	"Lactose_perc", (...)]
@@ -462,6 +321,7 @@ def update_prediction(X_slider, X_slider_value
 
 
     input_X = pd.DataFrame(input_X)
+    input_X = input_X.astype(float)
 
     my_data_h2o = h2o.H2OFrame(input_X)
 
@@ -470,13 +330,74 @@ def update_prediction(X_slider, X_slider_value
     prediction = prediction.as_data_frame()
     prediction = float(prediction.iloc[0])
 
-
-
     # And retuned to the Output of the callback function
-    return [
-            "Prediction: {}".format(round(prediction, 1)),
-            X_slider, X_slider_value
-           ]
+    return value, value, "Prediction: {}".format(round(prediction, 1))
+
+# # The callback function will provide one "Output" in the form of a string (=children)
+# @app.callback([
+#     # Output - prediction
+#     Output(component_id="prediction_result", component_property="children"),
+# ],
+# [Input({'type': 'X_slider', 'index': ALL}, 'value')])
+# # The input variable are set in the same order as the callback Inputs
+# def update_prediction(X_slider):
+#
+#     # We create a NumPy array in the form of the original features
+#     # ["API_perc","Mannitol_perc",	"MCC_perc",	"Lactose_perc", (...)]
+#     input_X = my_data.copy()
+#     input_X = input_X.iloc[[0]]
+#     input_X.loc[:, 'API_perc'] = X_slider[0]
+#     input_X.loc[:, 'Mannitol_perc'] = X_slider[1]
+#     input_X.loc[:, 'MCC_perc'] = X_slider[2]
+#     input_X.loc[:, 'Lactose_perc'] = X_slider[3]
+#     input_X.loc[:, 'Calcium_silicate_perc'] = X_slider[4]
+#     input_X.loc[:, 'HPMC_perc'] = X_slider[5]
+#     input_X.loc[:, 'Sodium_bicarbonate_perc'] = X_slider[6]
+#     input_X.loc[:, 'SSG_perc'] = X_slider[7]
+#     input_X.loc[:, 'CC_Na_perc'] = X_slider[8]
+#     input_X.loc[:, 'Crospovidone_perc'] = X_slider[9]
+#     input_X.loc[:, 'L_HPC_perc'] = X_slider[10]
+#     input_X.loc[:, 'Pregelatinized_starch_perc'] = X_slider[11]
+#     input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = X_slider[12]
+#     input_X.loc[:, 'Mg_stearate_perc'] = X_slider[13]
+#     input_X.loc[:, 'Aerosil_perc'] = X_slider[14]
+#     input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = X_slider[15]
+#     input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = X_slider[16]
+#     input_X.loc[:, 'Talc_perc'] = X_slider[17]
+#     input_X.loc[:, 'X2HP_bCD_perc'] = X_slider[18]
+#     input_X.loc[:, 'bCD_perc'] = X_slider[19]
+#     input_X.loc[:, 'CD_methacrylate_perc'] = X_slider[20]
+#     input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = X_slider[21]
+#     input_X.loc[:, 'Eudragit_EPO_perc'] = X_slider[22]
+#     input_X.loc[:, 'Poloxamer_188_perc'] = X_slider[23]
+#     input_X.loc[:, 'PVP_perc'] = X_slider[24]
+#     input_X.loc[:, 'SLS_perc'] = X_slider[25]
+#     input_X.loc[:, 'PVA_perc'] = X_slider[26]
+#     input_X.loc[:, 'Camphor_perc'] = X_slider[27]
+#     input_X.loc[:, 'Hardness_N'] = X_slider[28]
+#     input_X.loc[:, 'GATS7i'] = X_slider[29]
+#     input_X.loc[:, 'Thickness_mm'] = X_slider[30]
+#     input_X.loc[:, 'GGI7'] = X_slider[31]
+#     input_X.loc[:, 'MATS4p'] = X_slider[32]
+#     input_X.loc[:, 'MIC2'] = X_slider[33]
+#     input_X.loc[:, 'Punch_mm'] = X_slider[34]
+#     input_X.loc[:, 'nT12Ring'] = X_slider[35]
+#     input_X.loc[:, 'XLogP'] = X_slider[36]
+#     input_X.loc[:, 'GATS7p'] = X_slider[37]
+#     input_X.loc[:, 'nF8HeteroRing'] = X_slider[38]
+#
+#
+#     input_X = pd.DataFrame(input_X)
+#     input_X = input_X.astype(float)
+#
+#     my_data_h2o = h2o.H2OFrame(input_X)
+#
+#     # Prediction is calculated based on the input_X array
+#     prediction = my_model.predict(my_data_h2o)
+#     prediction = prediction.as_data_frame()
+#     prediction = float(prediction.iloc[0])
+#
+#     return ["Prediction: {}".format(round(prediction, 1))]
 
 
 def parse_contents(contents, filename, date):
