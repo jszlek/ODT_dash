@@ -73,5 +73,4 @@ run_before_dash()
 my_model = h2o.load_model('model/DeepLearning_grid__2_AutoML_20210831_185216_model_20')
 
 
-def open_browser(port=8050):
-    webbrowser.open_new(f"http://localhost:{port}")
+#open_browser = webbrowser.open_new(f"http://localhost:8050")

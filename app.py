@@ -4,11 +4,12 @@ import h2o
 import base64
 import datetime
 import io
+import webbrowser
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 import pandas as pd
-from run_h2o_server import my_model, open_browser
+from run_h2o_server import my_model
 from layouts import single_page, batch_page, my_data
 from dash.dependencies import Input, Output, State, ALL
 
@@ -286,5 +287,6 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
 
 if __name__ == "__main__":
     # open browser
-    app.run_server(host='0.0.0.0', port=8050, debug=True)
-    open_browser()
+    webbrowser.open_new(f"http://127.0.0.1:8050")
+    app.run_server(host='127.0.0.1', port=8050, use_reloader=False, debug=True)
+
