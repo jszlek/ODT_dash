@@ -25,8 +25,97 @@ extracted_column_names = ["API_perc", "Mannitol_perc",	"MCC_perc",	"Lactose_perc
 my_data = my_data[extracted_column_names]
 
 # Get the features' importance and their corresponding label
-extraced_varimp = my_model.varimp(use_pandas=True)
-df_feature_importances = pd.DataFrame(extraced_varimp[["scaled_importance", "variable"]])
+try:
+    if ("StackedEnsemble" in my_model.key) is False:
+        extraced_varimp = my_model.varimp(use_pandas=True)
+        df_feature_importances = pd.DataFrame(extraced_varimp[["scaled_importance", "variable"]])
+    elif ("StackedEnsemble" in my_model.key) is True:
+
+        # get the metalearner model
+        meta = h2o.get_model(my_model.metalearner().model_id)
+
+        # get varimp_df from metalearner
+        if ('glm' in meta.algo) is True:
+            varimp_df = pd.DataFrame.from_dict((meta.coef()), orient='index')
+            varimp_df = varimp_df[1:]  # omit Intercept
+        else:
+            varimp_df = pd.DataFrame(meta.varimp())
+
+        model_list = []
+
+        for model in my_model.params['base_models']['actual']:
+            model_list.append(model['name'])
+
+        print(model_list)
+
+        # create a dict for storing variable importance
+        var_imp_models = dict([(key, []) for key in model_list])
+
+        # get variable importance from base learners
+        for model in model_list:
+            tmp_model = h2o.get_model(str(model))
+
+            # check if tmp_model has varimp()
+            if tmp_model.varimp() is None:
+                print(str(model))
+                del var_imp_models[str(model)]
+            else:
+                # check if tmp_model is glm - it has no varimp() but coef()
+                if ('glm' in tmp_model.algo) is True:
+                    tmp_var_imp = pd.DataFrame.from_dict(tmp_model.coef(), orient='index').rename(
+                        columns={0: 'scaled_importance'})
+                    tmp_var_imp = tmp_var_imp[1:]  # omit Intercept
+                    tmp_var_imp.insert(loc=0, column='variable',
+                                       value=tmp_var_imp.index)  # reset index of rows into column
+                else:
+                    tmp_var_imp = tmp_model.varimp(use_pandas=True).iloc[:, [0, 2]]
+
+                var_imp_models[str(model)].append(tmp_var_imp)
+                meta_scale = varimp_df
+                for idx in meta_scale.iterrows():
+                    if ('glm' in meta.algo) is True:
+                        var_imp_models[str(idx[0])][0]['scaled_importance'] = var_imp_models[str(idx[0])][0].values[0:,
+                                                                              1] * float(idx[1])
+                    else:
+                        var_imp_models[str(idx[1][0])][0]['scaled_importance'] = var_imp_models[str(idx[1][0])][0][
+                                                                                     'scaled_importance'] * idx[1][3]
+
+            # new dataframe init
+            scaled_var_imp_df = pd.DataFrame()
+
+            for idx in var_imp_models.keys():
+                df_tmp = var_imp_models[str(idx)][0]['scaled_importance']
+                df_tmp.index = var_imp_models[str(idx)][0]['variable']
+                scaled_var_imp_df = pd.concat([scaled_var_imp_df, df_tmp], axis=1, sort=False)
+
+            # sum rows by index, NaNs are considered as zeros
+            # Total sum per row:
+            scaled_var_imp_df.loc[:, 'Total'] = scaled_var_imp_df.sum(axis=1)
+
+            # scale column 'Total' from 0 to 1
+            min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+            scaled_var_imp_df.loc[:, 'Total'] = min_max_scaler.fit_transform(
+                scaled_var_imp_df.loc[:, 'Total'].values.reshape(-1, 1))
+
+            # Sort by 'Total' values
+            scaled_var_imp_df_sorted = scaled_var_imp_df.sort_values(by=['Total'], ascending=False)
+
+            # Make additional column with original column indicies
+            orig_column_list = list()
+
+            for i in scaled_var_imp_df_sorted.index:
+                orig_column_list.append(my_data.columns.get_loc(i) + 1)
+
+            # orig_column_list = [(data.columns.get_loc(i)+1) for i in scaled_var_imp_df_sorted.index]
+            scaled_var_imp_df_sorted['Orig column'] = orig_column_list
+
+        df_feature_importances = scaled_var_imp_df_sorted
+
+except Exception as e:
+    print(e)
+    html.Div([
+        'There was an error during feature extraction'
+    ])
 
 
 # ----------------------------------------------- #
@@ -1505,7 +1594,7 @@ single_page = dcc.Loading(children=
 
                            ]),
                            ])
-)
+                          )
 
 batch_page = dcc.Loading(
 

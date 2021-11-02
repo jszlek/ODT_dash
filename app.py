@@ -8,121 +8,9 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 import pandas as pd
-from run_h2o_server import RunBeforeDash, my_model, open_browser
-from layouts import single_page, batch_page
-from sklearn import preprocessing
+from run_h2o_server import my_model, open_browser
+from layouts import single_page, batch_page, my_data
 from dash.dependencies import Input, Output, State, ALL
-
-# --------------------------------------
-# Load test data
-# --------------------------------------
-my_data = pd.read_csv('data/ODT_Disintegration_Time_db_expanded_raw_v17_1.csv', sep='\t', index_col=0)
-
-extracted_column_names = ["API_perc", "Mannitol_perc",	"MCC_perc",	"Lactose_perc",	"Calcium_silicate_perc",
-                          "HPMC_perc",	"Sodium_bicarbonate_perc",	"SSG_perc",	"CC_Na_perc",
-                          "Crospovidone_perc",	"L_HPC_perc",	"Pregelatinized_starch_perc",
-                          "Sodium_carboxymethyl_starch_perc",	"Mg_stearate_perc",	"Aerosil_perc",
-                          "Sodium_stearyl_fumarate_perc",	"Colloidal_silicon_dioxide_perc",	"Talc_perc",
-                          "X2HP_bCD_perc",	"bCD_perc",	"CD_methacrylate_perc",	"Amberlite_IRP_64_69_perc",
-                          "Eudragit_EPO_perc",	"Poloxamer_188_perc",	"PVP_perc",	"SLS_perc",	"PVA_perc",
-                          "Camphor_perc",	"Hardness_N",	"GATS7i",	"Thickness_mm",	"GGI7",	"MATS4p",
-                          "MIC2",	"Punch_mm",	"nT12Ring",	"XLogP",	"GATS7p",	"nF8HeteroRing",
-                          "Disintegration_time_sec"]
-my_data = my_data[extracted_column_names]
-
-# Get the features' importance and their corresponding label
-try:
-    if ("StackedEnsemble" in my_model.key) is False:
-        extraced_varimp = my_model.varimp(use_pandas=True)
-        df_feature_importances = pd.DataFrame(extraced_varimp[["scaled_importance", "variable"]])
-    elif ("StackedEnsemble" in my_model.key) is True:
-
-        # get the metalearner model
-        meta = h2o.get_model(my_model.metalearner().model_id)
-
-        # get varimp_df from metalearner
-        if ('glm' in meta.algo) is True:
-            varimp_df = pd.DataFrame.from_dict((meta.coef()), orient='index')
-            varimp_df = varimp_df[1:]  # omit Intercept
-        else:
-            varimp_df = pd.DataFrame(meta.varimp())
-
-        model_list = []
-
-        for model in my_model.params['base_models']['actual']:
-            model_list.append(model['name'])
-
-        print(model_list)
-
-        # create a dict for storing variable importance
-        var_imp_models = dict([(key, []) for key in model_list])
-
-        # get variable importance from base learners
-        for model in model_list:
-            tmp_model = h2o.get_model(str(model))
-
-            # check if tmp_model has varimp()
-            if tmp_model.varimp() is None:
-                print(str(model))
-                del var_imp_models[str(model)]
-            else:
-                # check if tmp_model is glm - it has no varimp() but coef()
-                if ('glm' in tmp_model.algo) is True:
-                    tmp_var_imp = pd.DataFrame.from_dict(tmp_model.coef(), orient='index').rename(
-                        columns={0: 'scaled_importance'})
-                    tmp_var_imp = tmp_var_imp[1:]  # omit Intercept
-                    tmp_var_imp.insert(loc=0, column='variable',
-                                       value=tmp_var_imp.index)  # reset index of rows into column
-                else:
-                    tmp_var_imp = tmp_model.varimp(use_pandas=True).iloc[:, [0, 2]]
-
-                var_imp_models[str(model)].append(tmp_var_imp)
-                meta_scale = varimp_df
-                for idx in meta_scale.iterrows():
-                    if ('glm' in meta.algo) is True:
-                        var_imp_models[str(idx[0])][0]['scaled_importance'] = var_imp_models[str(idx[0])][0].values[0:,
-                                                                              1] * float(idx[1])
-                    else:
-                        var_imp_models[str(idx[1][0])][0]['scaled_importance'] = var_imp_models[str(idx[1][0])][0][
-                                                                                     'scaled_importance'] * idx[1][3]
-
-            # new dataframe init
-            scaled_var_imp_df = pd.DataFrame()
-
-            for idx in var_imp_models.keys():
-                df_tmp = var_imp_models[str(idx)][0]['scaled_importance']
-                df_tmp.index = var_imp_models[str(idx)][0]['variable']
-                scaled_var_imp_df = pd.concat([scaled_var_imp_df, df_tmp], axis=1, sort=False)
-
-            # sum rows by index, NaNs are considered as zeros
-            # Total sum per row:
-            scaled_var_imp_df.loc[:, 'Total'] = scaled_var_imp_df.sum(axis=1)
-
-            # scale column 'Total' from 0 to 1
-            min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
-            scaled_var_imp_df.loc[:, 'Total'] = min_max_scaler.fit_transform(
-                scaled_var_imp_df.loc[:, 'Total'].values.reshape(-1, 1))
-
-            # Sort by 'Total' values
-            scaled_var_imp_df_sorted = scaled_var_imp_df.sort_values(by=['Total'], ascending=False)
-
-            # Make additional column with original column indicies
-            orig_column_list = list()
-
-            for i in scaled_var_imp_df_sorted.index:
-                orig_column_list.append(my_data.columns.get_loc(i) + 1)
-
-            # orig_column_list = [(data.columns.get_loc(i)+1) for i in scaled_var_imp_df_sorted.index]
-            scaled_var_imp_df_sorted['Orig column'] = orig_column_list
-
-        df_feature_importances = scaled_var_imp_df_sorted
-
-except Exception as e:
-    print(e)
-    html.Div([
-        'There was an error during feature extraction'
-    ])
-
 
 # ------------------------------------------------- #
 # -------------------- NAV BAR -------------------- #
@@ -333,72 +221,6 @@ def update_sliders(X_slider, X_slider_value):
     # And retuned to the Output of the callback function
     return value, value, "Prediction: {}".format(round(prediction, 1))
 
-# # The callback function will provide one "Output" in the form of a string (=children)
-# @app.callback([
-#     # Output - prediction
-#     Output(component_id="prediction_result", component_property="children"),
-# ],
-# [Input({'type': 'X_slider', 'index': ALL}, 'value')])
-# # The input variable are set in the same order as the callback Inputs
-# def update_prediction(X_slider):
-#
-#     # We create a NumPy array in the form of the original features
-#     # ["API_perc","Mannitol_perc",	"MCC_perc",	"Lactose_perc", (...)]
-#     input_X = my_data.copy()
-#     input_X = input_X.iloc[[0]]
-#     input_X.loc[:, 'API_perc'] = X_slider[0]
-#     input_X.loc[:, 'Mannitol_perc'] = X_slider[1]
-#     input_X.loc[:, 'MCC_perc'] = X_slider[2]
-#     input_X.loc[:, 'Lactose_perc'] = X_slider[3]
-#     input_X.loc[:, 'Calcium_silicate_perc'] = X_slider[4]
-#     input_X.loc[:, 'HPMC_perc'] = X_slider[5]
-#     input_X.loc[:, 'Sodium_bicarbonate_perc'] = X_slider[6]
-#     input_X.loc[:, 'SSG_perc'] = X_slider[7]
-#     input_X.loc[:, 'CC_Na_perc'] = X_slider[8]
-#     input_X.loc[:, 'Crospovidone_perc'] = X_slider[9]
-#     input_X.loc[:, 'L_HPC_perc'] = X_slider[10]
-#     input_X.loc[:, 'Pregelatinized_starch_perc'] = X_slider[11]
-#     input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = X_slider[12]
-#     input_X.loc[:, 'Mg_stearate_perc'] = X_slider[13]
-#     input_X.loc[:, 'Aerosil_perc'] = X_slider[14]
-#     input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = X_slider[15]
-#     input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = X_slider[16]
-#     input_X.loc[:, 'Talc_perc'] = X_slider[17]
-#     input_X.loc[:, 'X2HP_bCD_perc'] = X_slider[18]
-#     input_X.loc[:, 'bCD_perc'] = X_slider[19]
-#     input_X.loc[:, 'CD_methacrylate_perc'] = X_slider[20]
-#     input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = X_slider[21]
-#     input_X.loc[:, 'Eudragit_EPO_perc'] = X_slider[22]
-#     input_X.loc[:, 'Poloxamer_188_perc'] = X_slider[23]
-#     input_X.loc[:, 'PVP_perc'] = X_slider[24]
-#     input_X.loc[:, 'SLS_perc'] = X_slider[25]
-#     input_X.loc[:, 'PVA_perc'] = X_slider[26]
-#     input_X.loc[:, 'Camphor_perc'] = X_slider[27]
-#     input_X.loc[:, 'Hardness_N'] = X_slider[28]
-#     input_X.loc[:, 'GATS7i'] = X_slider[29]
-#     input_X.loc[:, 'Thickness_mm'] = X_slider[30]
-#     input_X.loc[:, 'GGI7'] = X_slider[31]
-#     input_X.loc[:, 'MATS4p'] = X_slider[32]
-#     input_X.loc[:, 'MIC2'] = X_slider[33]
-#     input_X.loc[:, 'Punch_mm'] = X_slider[34]
-#     input_X.loc[:, 'nT12Ring'] = X_slider[35]
-#     input_X.loc[:, 'XLogP'] = X_slider[36]
-#     input_X.loc[:, 'GATS7p'] = X_slider[37]
-#     input_X.loc[:, 'nF8HeteroRing'] = X_slider[38]
-#
-#
-#     input_X = pd.DataFrame(input_X)
-#     input_X = input_X.astype(float)
-#
-#     my_data_h2o = h2o.H2OFrame(input_X)
-#
-#     # Prediction is calculated based on the input_X array
-#     prediction = my_model.predict(my_data_h2o)
-#     prediction = prediction.as_data_frame()
-#     prediction = float(prediction.iloc[0])
-#
-#     return ["Prediction: {}".format(round(prediction, 1))]
-
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
@@ -464,5 +286,5 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
 
 if __name__ == "__main__":
     # open browser
-    open_browser()
     app.run_server(host='0.0.0.0', port=8050, debug=True)
+    open_browser()
