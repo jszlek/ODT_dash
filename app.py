@@ -162,51 +162,61 @@ def update_sliders(X_slider, X_slider_value):
 
     ctx = dash.callback_context
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
-    value = X_slider if trigger_id == "X_slider_value" else X_slider
+    # if trigger_id == "X_slider_value":
+    #     X_slider = X_slider_value
+    # else:
+    #     X_slider_value = X_slider
+    #
+    # if trigger_id == "X_slider":
+    #     X_slider_value = X_slider
+    # else:
+    #     X_slider = X_slider_value
+
+    value = X_slider_value if "X_slider_value" in trigger_id else X_slider
 
     # We create a NumPy array in the form of the original features
     # ["API_perc","Mannitol_perc",	"MCC_perc",	"Lactose_perc", (...)]
     input_X = my_data.copy()
     input_X = input_X.iloc[[0]]
-    input_X.loc[:, 'API_perc'] = X_slider[0]
-    input_X.loc[:, 'Mannitol_perc'] = X_slider[1]
-    input_X.loc[:, 'MCC_perc'] = X_slider[2]
-    input_X.loc[:, 'Lactose_perc'] = X_slider[3]
-    input_X.loc[:, 'Calcium_silicate_perc'] = X_slider[4]
-    input_X.loc[:, 'HPMC_perc'] = X_slider[5]
-    input_X.loc[:, 'Sodium_bicarbonate_perc'] = X_slider[6]
-    input_X.loc[:, 'SSG_perc'] = X_slider[7]
-    input_X.loc[:, 'CC_Na_perc'] = X_slider[8]
-    input_X.loc[:, 'Crospovidone_perc'] = X_slider[9]
-    input_X.loc[:, 'L_HPC_perc'] = X_slider[10]
-    input_X.loc[:, 'Pregelatinized_starch_perc'] = X_slider[11]
-    input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = X_slider[12]
-    input_X.loc[:, 'Mg_stearate_perc'] = X_slider[13]
-    input_X.loc[:, 'Aerosil_perc'] = X_slider[14]
-    input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = X_slider[15]
-    input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = X_slider[16]
-    input_X.loc[:, 'Talc_perc'] = X_slider[17]
-    input_X.loc[:, 'X2HP_bCD_perc'] = X_slider[18]
-    input_X.loc[:, 'bCD_perc'] = X_slider[19]
-    input_X.loc[:, 'CD_methacrylate_perc'] = X_slider[20]
-    input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = X_slider[21]
-    input_X.loc[:, 'Eudragit_EPO_perc'] = X_slider[22]
-    input_X.loc[:, 'Poloxamer_188_perc'] = X_slider[23]
-    input_X.loc[:, 'PVP_perc'] = X_slider[24]
-    input_X.loc[:, 'SLS_perc'] = X_slider[25]
-    input_X.loc[:, 'PVA_perc'] = X_slider[26]
-    input_X.loc[:, 'Camphor_perc'] = X_slider[27]
-    input_X.loc[:, 'Hardness_N'] = X_slider[28]
-    input_X.loc[:, 'GATS7i'] = X_slider[29]
-    input_X.loc[:, 'Thickness_mm'] = X_slider[30]
-    input_X.loc[:, 'GGI7'] = X_slider[31]
-    input_X.loc[:, 'MATS4p'] = X_slider[32]
-    input_X.loc[:, 'MIC2'] = X_slider[33]
-    input_X.loc[:, 'Punch_mm'] = X_slider[34]
-    input_X.loc[:, 'nT12Ring'] = X_slider[35]
-    input_X.loc[:, 'XLogP'] = X_slider[36]
-    input_X.loc[:, 'GATS7p'] = X_slider[37]
-    input_X.loc[:, 'nF8HeteroRing'] = X_slider[38]
+    input_X.loc[:, 'API_perc'] = value[0]
+    input_X.loc[:, 'Mannitol_perc'] = value[1]
+    input_X.loc[:, 'MCC_perc'] = value[2]
+    input_X.loc[:, 'Lactose_perc'] = value[3]
+    input_X.loc[:, 'Calcium_silicate_perc'] = value[4]
+    input_X.loc[:, 'HPMC_perc'] = value[5]
+    input_X.loc[:, 'Sodium_bicarbonate_perc'] = value[6]
+    input_X.loc[:, 'SSG_perc'] = value[7]
+    input_X.loc[:, 'CC_Na_perc'] = value[8]
+    input_X.loc[:, 'Crospovidone_perc'] = value[9]
+    input_X.loc[:, 'L_HPC_perc'] = value[10]
+    input_X.loc[:, 'Pregelatinized_starch_perc'] = value[11]
+    input_X.loc[:, 'Sodium_carboxymethyl_starch_perc'] = value[12]
+    input_X.loc[:, 'Mg_stearate_perc'] = value[13]
+    input_X.loc[:, 'Aerosil_perc'] = value[14]
+    input_X.loc[:, 'Sodium_stearyl_fumarate_perc'] = value[15]
+    input_X.loc[:, 'Colloidal_silicon_dioxide_perc'] = value[16]
+    input_X.loc[:, 'Talc_perc'] = value[17]
+    input_X.loc[:, 'X2HP_bCD_perc'] = value[18]
+    input_X.loc[:, 'bCD_perc'] = value[19]
+    input_X.loc[:, 'CD_methacrylate_perc'] = value[20]
+    input_X.loc[:, 'Amberlite_IRP_64_69_perc'] = value[21]
+    input_X.loc[:, 'Eudragit_EPO_perc'] = value[22]
+    input_X.loc[:, 'Poloxamer_188_perc'] = value[23]
+    input_X.loc[:, 'PVP_perc'] = value[24]
+    input_X.loc[:, 'SLS_perc'] = value[25]
+    input_X.loc[:, 'PVA_perc'] = value[26]
+    input_X.loc[:, 'Camphor_perc'] = value[27]
+    input_X.loc[:, 'Hardness_N'] = value[28]
+    input_X.loc[:, 'GATS7i'] = value[29]
+    input_X.loc[:, 'Thickness_mm'] = value[30]
+    input_X.loc[:, 'GGI7'] = value[31]
+    input_X.loc[:, 'MATS4p'] = value[32]
+    input_X.loc[:, 'MIC2'] = value[33]
+    input_X.loc[:, 'Punch_mm'] = value[34]
+    input_X.loc[:, 'nT12Ring'] = value[35]
+    input_X.loc[:, 'XLogP'] = value[36]
+    input_X.loc[:, 'GATS7p'] = value[37]
+    input_X.loc[:, 'nF8HeteroRing'] = value[38]
 
 
     input_X = pd.DataFrame(input_X)

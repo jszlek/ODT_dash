@@ -3,6 +3,7 @@ from dash import dcc
 from dash import html
 import numpy as np
 import pandas as pd
+import h2o
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 from run_h2o_server import my_model
@@ -143,12 +144,35 @@ sliders_max = np.floor(my_data.max())
 single_page = dcc.Loading(children=
                    html.Div([
                            # Title display
-                           dbc.Row([dbc.Col(html.Div(html.H2("ODT Simulation Tool")))],
+                           dbc.Row([
+                               dbc.Col(html.Div(html.H2("ODT Simulation Tool")), style={'width': '33%'}),
+                                ],
                                    style={"height": "40px", "width": "100%", "margin-left": "auto", "margin-right": "auto", "margin-bottom": "5px", "margin-top": "5px"}),
+
 
                            # Dash Graph Component calls the fig_features_importance parameters
                            # We display the most important feature's name
-                           dcc.Graph(figure=fig_features_importance),
+                           # dbc.Row(html.Div([
+                           #     dbc.Col(html.Div([dcc.Graph(figure=fig_features_importance)]),
+                           #             width={"size": 4, "order": 1}),
+                           #     dbc.Col(html.Div(
+                           #         [
+                           #             html.Iframe(
+                           #                 src="data/shap_force_plot.html",
+                           #                 style={"height": "450px"},
+                           #             )
+                           #         ]
+                           #     ), width={"size": 4, "order": 3}),
+                           #     dbc.Col(html.Div(
+                           #         [
+                           #             html.Iframe(
+                           #                 src="data/shap_summary_plot.pdf",
+                           #                 style={"height": "450px"},
+                           #             )
+                           #         ]
+                           #     ), width={"size": 4, "order": 2})
+                           #
+                           # ])),
 
                            html.Hr(style={'size': '100%', 'color': 'grey'}),
 
