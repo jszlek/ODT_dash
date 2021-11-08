@@ -156,13 +156,13 @@ shap_data_features = pickle.load(f)
 f.close()
 
 def _force_plot_html(*args):
-    force_plot = shap.force_plot(*args, matplotlib=False)
+    force_plot = shap.force_plot(*args, matplotlib=False, figsize=(8, 4))
     shap_html = f"<head>{shap.getjs()}</head><body>{force_plot.html()}</body>"
     return html.Iframe(srcDoc=shap_html,
-                       style={"height": "450px", "border": 0, 'width': '650px'})
+                       style={"height": "450px", "border": 0, 'width': '100%', 'align': 'center'})
 
 def _summary_plot_html(*args):
-    fig = plt.figure()
+    plt.figure()
     summary_plot = shap.summary_plot(*args, show=False)
     plotly_fig = mpl_to_plotly(summary_plot)
     graph = dcc.Graph(id='myGraph', fig=plotly_fig)
@@ -185,13 +185,13 @@ single_page = dcc.Loading(children=
                            # Dash Graph Component calls the fig_features_importance parameters
                            # We display the most important feature's name
                            dbc.Row([
-                               dbc.Col(html.Div([dcc.Graph(figure=fig_features_importance)]), width={"size": 6, "order": 1},),
+                               dbc.Col(html.Div([dcc.Graph(figure=fig_features_importance)]), width={"size": 4, "order": 1}, className="card"),
 
                                dbc.Col(html.Div(
                                    [
                                        _force_plot_html(shap_explainer_expected_value, shap_values, shap_data_features)
                                    ]
-                               ), width={"size": 6, "order": 2},),
+                               ), width={"size": 4, "order": 2}, className="card"),
 
                            ], style={'width': '100%', 'align': 'center'}),
                            dbc.Row([

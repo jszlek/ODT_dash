@@ -27,8 +27,8 @@ search_bar = dbc.Row(
         ),
     ],
     style={"margin-right": "3rem"},
-    no_gutters=True,
-    className="ml-auto flex-nowrap mt-3 mt-md-0",
+    #no_gutters=True,
+    className="g-0 ml-auto flex-nowrap mt-3 mt-md-0",
     align="center",
 )
 
@@ -43,7 +43,8 @@ navbar = dbc.Navbar(
                     dbc.Col(dbc.NavbarBrand("ODT calculator", className="ml-2")),
                 ], style={"margin-left": "11%"},
                 align="center",
-                no_gutters=True,
+                className='g-0',
+#                no_gutters=True,
             ),
             href="https://www.uj-cm.krakow.edu.pl",
         ),
@@ -149,10 +150,10 @@ def render_page_content(pathname):
 # The callback function will provide one "Output" in the form of a string (=children)
 @app.callback(
     [
-    Output({'type': 'X_slider', 'index': ALL}, 'value'),
-    Output({'type': 'X_slider_value', 'index': ALL}, 'value'),
-    # Output - prediction
-    Output(component_id="prediction_result", component_property="children")
+     Output({'type': 'X_slider', 'index': ALL}, 'value'),
+     Output({'type': 'X_slider_value', 'index': ALL}, 'value'),
+     # Output - prediction
+     Output(component_id="prediction_result", component_property="children")
     ],
     Input({'type': 'X_slider', 'index': ALL}, 'value'),
     Input({'type': 'X_slider_value', 'index': ALL}, 'value'),
