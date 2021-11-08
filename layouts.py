@@ -1,13 +1,17 @@
 import dash
+import matplotlib.pyplot as plt
 from dash import dcc
 from dash import html
 import numpy as np
 import pandas as pd
 import h2o
+import pickle
+import shap
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
+from plotly.tools import mpl_to_plotly
 from run_h2o_server import my_model
-
+from sklearn import preprocessing
 # --------------------------------------
 # Load test data
 # --------------------------------------
@@ -139,40 +143,65 @@ sliders_mean = np.floor(my_data.mean())
 sliders_max = np.floor(my_data.max())
 
 
+f = open('data/shap_explainer_expected_value.dat', 'rb')
+shap_explainer_expected_value = pickle.load(f)
+f.close()
+
+f = open('data/shap_values.dat', 'rb')
+shap_values = pickle.load(f)
+f.close()
+
+f = open('data/data_features.dat', 'rb')
+shap_data_features = pickle.load(f)
+f.close()
+
+def _force_plot_html(*args):
+    force_plot = shap.force_plot(*args, matplotlib=False)
+    shap_html = f"<head>{shap.getjs()}</head><body>{force_plot.html()}</body>"
+    return html.Iframe(srcDoc=shap_html,
+                       style={"height": "450px", "border": 0, 'width': '650px'})
+
+def _summary_plot_html(*args):
+    fig = plt.figure()
+    summary_plot = shap.summary_plot(*args, show=False)
+    plotly_fig = mpl_to_plotly(summary_plot)
+    graph = dcc.Graph(id='myGraph', fig=plotly_fig)
+
+    return graph
+#        # html.Iframe(srcDoc=summary_html,
+#        #               style={"height": "450px", "border": 0, 'width': '650px'})
+
 # Layout for user info page
 # Page wrapped in dcc.Loading widget to add a loading animation when the page is loaded/updated
 single_page = dcc.Loading(children=
                    html.Div([
                            # Title display
                            dbc.Row([
-                               dbc.Col(html.Div(html.H2("ODT Simulation Tool")), style={'width': '33%'}),
+                               dbc.Col(html.Div(html.H2("ODT Simulation Tool")), style={'width': '100%'}),
                                 ],
                                    style={"height": "40px", "width": "100%", "margin-left": "auto", "margin-right": "auto", "margin-bottom": "5px", "margin-top": "5px"}),
 
 
                            # Dash Graph Component calls the fig_features_importance parameters
                            # We display the most important feature's name
-                           # dbc.Row(html.Div([
-                           #     dbc.Col(html.Div([dcc.Graph(figure=fig_features_importance)]),
-                           #             width={"size": 4, "order": 1}),
-                           #     dbc.Col(html.Div(
-                           #         [
-                           #             html.Iframe(
-                           #                 src="data/shap_force_plot.html",
-                           #                 style={"height": "450px"},
-                           #             )
-                           #         ]
-                           #     ), width={"size": 4, "order": 3}),
-                           #     dbc.Col(html.Div(
-                           #         [
-                           #             html.Iframe(
-                           #                 src="data/shap_summary_plot.pdf",
-                           #                 style={"height": "450px"},
-                           #             )
-                           #         ]
-                           #     ), width={"size": 4, "order": 2})
-                           #
-                           # ])),
+                           dbc.Row([
+                               dbc.Col(html.Div([dcc.Graph(figure=fig_features_importance)]), width={"size": 6, "order": 1},),
+
+                               dbc.Col(html.Div(
+                                   [
+                                       _force_plot_html(shap_explainer_expected_value, shap_values, shap_data_features)
+                                   ]
+                               ), width={"size": 6, "order": 2},),
+
+                           ], style={'width': '100%', 'align': 'center'}),
+                           dbc.Row([
+                               dbc.Col(html.Div(
+                                   [
+#                                       _summary_plot_html(shap_values)
+                                   ]
+                               ), width={"size": 6, "order": 2}, ),
+
+                           ], style={'width': '100%', 'align': 'center'}),
 
                            html.Hr(style={'size': '100%', 'color': 'grey'}),
 
