@@ -20,10 +20,10 @@ ODT_LOGO = "/assets/ODT_calc_icon.svg"
 
 search_bar = dbc.Row(
     [
-        dbc.Col(dbc.Input(type="search", placeholder="Search", id="search_bar")),
+        dbc.Col(dbc.Input(type="search", placeholder="Search", id="search_bar"), align="right"),
         dbc.Col(
             dbc.Button("Search", color="light", className="ml-2", id="search_bar_button"),
-            width="auto",
+            width="auto", align="right"
         ),
     ],
     style={"margin-right": "3rem"},
@@ -46,7 +46,7 @@ navbar = dbc.Navbar(
                 className='g-0',
 #                no_gutters=True,
             ),
-            href="https://www.uj-cm.krakow.edu.pl",
+            href="https://github.com/jszlek/ODT_dash",
         ),
         dbc.NavbarToggler(id="navbar-toggler"),
         dbc.Collapse(search_bar, id="navbar-collapse", navbar=True),
