@@ -7,9 +7,9 @@ import pandas as pd
 import h2o
 import pickle
 import shap
+import base64
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
-from plotly.tools import mpl_to_plotly
 from run_h2o_server import my_model
 from sklearn import preprocessing
 # --------------------------------------
@@ -161,15 +161,12 @@ def _force_plot_html(*args):
     return html.Iframe(srcDoc=shap_html,
                        style={"height": "450px", "border": 0, 'width': '100%', 'align': 'center'})
 
-def _summary_plot_html(*args):
-    plt.figure()
-    summary_plot = shap.summary_plot(*args, show=False)
-    plotly_fig = mpl_to_plotly(summary_plot)
-    graph = dcc.Graph(id='myGraph', fig=plotly_fig)
+def _summary_plot(*args):
+    image_filename = 'assets/summary_plot.png'  # replace with your own image
+    encoded_image = base64.b64encode(open(image_filename, 'rb').read())
+    return html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()),
+                    style={"height": "100%", "border": 0, 'width': '100%'})
 
-    return graph
-#        # html.Iframe(srcDoc=summary_html,
-#        #               style={"height": "450px", "border": 0, 'width': '650px'})
 
 # Layout for user info page
 # Page wrapped in dcc.Loading widget to add a loading animation when the page is loaded/updated
@@ -186,20 +183,16 @@ single_page = dcc.Loading(children=
                            # We display the most important feature's name
                            dbc.Row([
                                dbc.Col(html.Div([dcc.Graph(figure=fig_features_importance)]), width={"size": 4, "order": 1}, className="card"),
-
                                dbc.Col(html.Div(
                                    [
                                        _force_plot_html(shap_explainer_expected_value, shap_values, shap_data_features)
                                    ]
                                ), width={"size": 4, "order": 2}, className="card"),
-
-                           ], style={'width': '100%', 'align': 'center'}),
-                           dbc.Row([
                                dbc.Col(html.Div(
                                    [
-#                                       _summary_plot_html(shap_values)
-                                   ]
-                               ), width={"size": 6, "order": 2}, ),
+                                       _summary_plot()
+                                   ], style={"height": "100%", "border": 0, 'width': '100%', 'align': 'center'}
+                               ), width={"size": 4, "order": 3}, className="card")
 
                            ], style={'width': '100%', 'align': 'center'}),
 
@@ -246,7 +239,7 @@ single_page = dcc.Loading(children=
                                                                 max=sliders_max[0],
                                                                 value=sliders_mean[0],
                                                                 style={'width': '20%', 'align': 'right'}
-                                                            ),
+                                                            )
                                                         ],
                                                     ),
                                                     html.Hr(style={'size': '33%', 'color': 'grey'}),
@@ -288,8 +281,7 @@ single_page = dcc.Loading(children=
                                                     ]),
                                                     width={"size": 4, "order": 2},
                                                 ),
-                                                dbc.Col(
-                                                    html.Div([
+                                                dbc.Col(html.Div([
                                                         html.P(
                                                             sliders_label[2],
                                                             style={'width': '100%', 'align': 'left'}
@@ -321,9 +313,12 @@ single_page = dcc.Loading(children=
                                                         ),
                                                         html.Hr(style={'size': '33%', 'color': 'grey'}),
                                                     ]),
+
                                                     width={"size": 4, "order": 3},
+
                                                 ),
-                                            ]
+                                            ],
+                                                className="mb-4"
                                         ),
                                dbc.Row(                                         # Second row
                                     [
