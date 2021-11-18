@@ -1,5 +1,10 @@
-import dash
-import matplotlib.pyplot as plt
+#
+# Copyrights, Jakub Szlęk, November 2021
+# layouts.py is a part of ODT_dash application
+# Repository is available at: https://github.com/jszlek/ODT_dash
+# License: GNU GPLv3
+#
+
 from dash import dcc
 from dash import html
 import numpy as np
@@ -1682,5 +1687,51 @@ batch_page = dcc.Loading(
         html.P(),
         html.P(),
         html.Div(id='output-data-upload'),
+    ])
+)
+
+help_page = dcc.Loading(
+
+    html.Div([
+        html.Hr(),
+        html.A('Help page is landing here',
+               style={
+                   'width': '100%',
+                   'height': '90px',
+                   'lineHeight': '90px',
+                   'textAlign': 'center',
+               },
+               ),
+        html.Hr(),
+        html.Div(id='help-page'),
+    ])
+)
+
+about_page = dcc.Loading(
+
+    html.Div([
+        html.Hr(),
+        dcc.Markdown('''
+        # About  
+        ### License GPLv3  
+        ### Copyright: Jakub Szlęk, 2021  
+        ## Disclaimer  
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+    
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+    
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
+        
+        '''),
+        html.Hr(),
+        html.P("License"),
+        html.Div(id='about-page'),
     ])
 )

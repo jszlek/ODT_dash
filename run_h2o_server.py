@@ -1,9 +1,15 @@
+#
+# Copyrights, Jakub Szlęk, November 2021
+# run_h2o_server.py is a part of ODT_dash applications
+# Repository is available at: https://github.com/jszlek/ODT_dash
+# License: GNU GPLv3
+#
+
 from configparser import ConfigParser
 import h2o
 import random
 import string
 import psutil
-import webbrowser
 from pathlib import Path
 
 
@@ -72,5 +78,3 @@ def run_before_dash():
 run_before_dash()
 my_model = h2o.load_model('model/DeepLearning_grid__2_AutoML_20210831_185216_model_20')
 
-
-#open_browser = webbrowser.open_new(f"http://localhost:8050")

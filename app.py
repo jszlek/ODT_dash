@@ -1,3 +1,10 @@
+#
+# Copyrights, Jakub Szlęk, November 2021
+# app.py is a part of ODT_dash application
+# Repository is available at: https://github.com/jszlek/ODT_dash
+# License: GNU GPLv3
+#
+
 # Import libraries
 import dash
 import h2o
@@ -10,7 +17,7 @@ from dash import html
 import dash_bootstrap_components as dbc
 import pandas as pd
 from run_h2o_server import my_model
-from layouts import single_page, batch_page, my_data
+from layouts import single_page, batch_page, my_data, help_page, about_page
 from dash.dependencies import Input, Output, State, ALL
 
 # ------------------------------------------------- #
@@ -74,7 +81,9 @@ SIDEBAR_STYLE = {
 
 links = {
     "Single prediction": ["/single-prediction", "single-prediction-link"],
-    "Batch mode": ["/batch-mode", "batch-mode-link"]
+    "Batch mode": ["/batch-mode", "batch-mode-link"],
+    "Help page": ["/help-page", "help-page-link"],
+    "About": ["/about-page", "about-page-link"]
 }
 
 sidebar = html.Div(
@@ -124,7 +133,7 @@ app.layout = html.Div([
 def toggle_active_links(pathname):
     if pathname == "/" or pathname == "//":
         # Treat page 1 as the homepage / index
-        return True, False
+        return True, False, False, False
     return [pathname == f"{links[id][0]}" for id in links.keys()]
 
 
@@ -136,15 +145,21 @@ def toggle_active_links(pathname):
 def render_page_content(pathname):
     if pathname in ["/", "//", f"{links[list(links.keys())[0]][0]}"]:
         return single_page
-    else:
+    if pathname in ["/", "//", f"{links[list(links.keys())[1]][0]}"]:
         return batch_page
-    return dbc.Jumbotron(
+    if pathname in ["/", "//", f"{links[list(links.keys())[2]][0]}"]:
+        return help_page
+    if pathname in ["/", "//", f"{links[list(links.keys())[3]][0]}"]:
+        return about_page
+    else:
+        return dbc.Jumbotron(
         [
             html.H1("404: Not found", className="text-danger"),
             html.Hr(),
             html.P(f"The pathname {pathname} was not recognised..."),
         ]
-    )
+        )
+    return
 
 
 # The callback function will provide one "Output" in the form of a string (=children)
